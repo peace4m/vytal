@@ -29,7 +29,11 @@
     "back": "Back",
     "next": "Next",
     "confirm": "Confirm & Proceed",
-    "downloadPdf": "Download PDF Summary"
+    "downloadPdf": "Download PDF Summary",
+    "calculate": "Calculate Risk Score",
+    "evaluate": "Evaluate Rules",
+    "checkInteractions": "Check Interactions",
+    "reset": "Reset Form"
   },
   "common": {
     "loading": "Loading...",
@@ -37,5 +41,31 @@
     "sessionActive": "Anonymous Session Active",
     "verifiedEvidence": "Verified Clinical Evidence",
     "educationalOnly": "Educational Use Only"
+  },
+  "modules": {
+    "reportExplainer": {
+      "title": "Medical Laboratory Report Explainer",
+      "description": "Upload a PDF laboratory report or enter values manually. Explains test results in simple language with laboratory reference ranges."
+    },
+    "idrs": {
+      "title": "Indian Diabetes Risk Score (IDRS)",
+      "description": "Calculates the published 4-factor risk score by Mohan and colleagues (JAPI 2005) for South Asian adults."
+    },
+    "triage": {
+      "title": "Symptom Triage & Red-Flag Protocols",
+      "description": "Deterministic rule engine evaluated with emergency red flags first. Cannot be overridden by lower-priority findings."
+    },
+    "medications": {
+      "title": "Medication Interaction Checker",
+      "description": "RxNorm concept normalization and evidence-backed pairwise interaction reviews with negative finding disclaimers."
+    },
+    "summary": {
+      "title": "Consolidated Health Summary & Brief",
+      "description": "Integrates verified findings across Modules 01 through 04 with cross-module observations and downloadable PDF brief."
+    },
+    "research": {
+      "title": "Machine Learning Research & Analytics Dashboard",
+      "description": "Independent ML subsystem benchmarking 4 algorithms with Stratified 5-Fold Cross-Validation on a South Asian cohort."
+    }
   }
 }
