@@ -1,168 +1,248 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/Alert';
-import { Pill, Plus, Trash2 } from 'lucide-react';
+import { Pill, RotateCcw, ArrowRight, Zap } from 'lucide-react';
 import { apiClient } from '@/services/api';
+import { MedicationSearchAutocomplete } from '@/modules/medication-check/MedicationSearchAutocomplete';
+import { SelectedMedicationChips, SelectedMedication } from '@/modules/medication-check/SelectedMedicationChips';
+import { InteractionResultCard, InteractionItem } from '@/modules/medication-check/InteractionResultCard';
+import { SafetyDisclaimerCallout } from '@/modules/medication-check/SafetyDisclaimerCallout';
+
+interface MedicationCheckResponseData {
+  check_id: string;
+  total_medications: number;
+  interaction_count: number;
+  has_severe_warning: boolean;
+  interactions: InteractionItem[];
+  mandatory_disclaimer: string;
+}
 
 export const MedicationCheckerPage: React.FC = () => {
-  const [selectedMeds, setSelectedMeds] = useState<string[]>(['Metformin', 'Iodinated Radiocontrast']);
-  const [newMed, setNewMed] = useState('');
-  const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language || 'en';
 
-  const addMed = () => {
-    if (newMed.trim() && !selectedMeds.includes(newMed.trim())) {
-      setSelectedMeds([...selectedMeds, newMed.trim()]);
-      setNewMed('');
+  const [selectedMeds, setSelectedMeds] = useState<SelectedMedication[]>([
+    { id: '1', name: 'Metformin', rxcui: '6809', drug_class: 'Biguanide' },
+    { id: '2', name: 'Iodinated Radiocontrast', rxcui: '6038', drug_class: 'Diagnostic Agent' },
+  ]);
+  const [result, setResult] = useState<MedicationCheckResponseData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleAddMedication = (med: SelectedMedication) => {
+    if (!selectedMeds.some((m) => m.name.toLowerCase() === med.name.toLowerCase())) {
+      setSelectedMeds((prev) => [...prev, med]);
+      setResult(null);
     }
   };
 
-  const removeMed = (med: string) => {
-    setSelectedMeds(selectedMeds.filter((m) => m !== med));
+  const handleRemoveMedication = (id: string) => {
+    setSelectedMeds((prev) => prev.filter((m) => m.id !== id));
+    setResult(null);
+  };
+
+  const handleClearAll = () => {
+    setSelectedMeds([]);
+    setResult(null);
+    setErrorMessage(null);
+  };
+
+  const handlePresetExample = (drugA: string, drugB: string) => {
+    setSelectedMeds([
+      { id: 'ex-1', name: drugA },
+      { id: 'ex-2', name: drugB },
+    ]);
+    setResult(null);
   };
 
   const handleCheck = async () => {
     if (selectedMeds.length < 2) return;
     setLoading(true);
+    setErrorMessage(null);
+
     try {
-      const data = await apiClient<any>('/medications/check', {
-        method: 'POST',
-        body: JSON.stringify({
-          medications: selectedMeds.map((name) => ({ name })),
-        }),
-      });
+      const data = await apiClient<MedicationCheckResponseData>(
+        `/medications/check?lang=${currentLang}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            medications: selectedMeds.map((m) => ({ name: m.name, rxcui: m.rxcui })),
+          }),
+        }
+      );
       setResult(data);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Failed to check medication interactions.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded">
+            <span className="text-xs font-mono font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-200">
               MODULE 04
             </span>
-            <Badge variant="normal">API Connected</Badge>
+            <Badge variant="normal">RxNorm Normalization & Evidence Checks</Badge>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
             Medication Interaction Checker
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            RxNorm concept normalization and evidence-backed pairwise interaction reviews.
+          <p className="text-sm text-slate-500 mt-1 max-w-2xl">
+            Evidence-backed pairwise drug interaction reviews with brand normalization, clinical
+            mechanism descriptions, and mandatory safety notices.
           </p>
         </div>
+
+        {selectedMeds.length > 0 && (
+          <Button variant="ghost" size="sm" onClick={handleClearAll} className="self-start sm:self-auto text-slate-500">
+            <RotateCcw className="w-4 h-4 mr-1.5" />
+            Reset Regimen
+          </Button>
+        )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Active Medication Cohort</CardTitle>
-            <CardDescription className="text-xs">
-              Add at least two medications to evaluate interactions.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Input
-                placeholder="e.g. Aspirin, Metformin, Warfarin"
-                value={newMed}
-                onChange={(e) => setNewMed(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && addMed()}
-              />
-              <Button onClick={addMed} size="sm" variant="outline" className="shrink-0">
-                <Plus className="w-4 h-4 mr-1" />
-                Add
-              </Button>
-            </div>
+      {/* Preset Quick Test Buttons */}
+      <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap items-center gap-2 text-xs">
+        <span className="font-semibold text-slate-600 flex items-center gap-1">
+          <Zap className="w-3.5 h-3.5 text-amber-500" />
+          Test Known Pairs:
+        </span>
+        <button
+          type="button"
+          onClick={() => handlePresetExample('Metformin', 'Iodinated Radiocontrast')}
+          className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:text-teal-700 transition-colors text-slate-700 font-medium"
+        >
+          Metformin + Contrast
+        </button>
+        <button
+          type="button"
+          onClick={() => handlePresetExample('Aspirin', 'Warfarin')}
+          className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:text-teal-700 transition-colors text-slate-700 font-medium"
+        >
+          Aspirin + Warfarin
+        </button>
+        <button
+          type="button"
+          onClick={() => handlePresetExample('Clopidogrel', 'Omeprazole')}
+          className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:text-teal-700 transition-colors text-slate-700 font-medium"
+        >
+          Clopidogrel + Omeprazole
+        </button>
+        <button
+          type="button"
+          onClick={() => handlePresetExample('Metformin', 'Paracetamol')}
+          className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:border-teal-500 hover:text-teal-700 transition-colors text-slate-700 font-medium"
+        >
+          Metformin + Paracetamol
+        </button>
+      </div>
 
-            <div className="space-y-2">
-              <span className="text-xs font-semibold text-slate-500">Selected Drugs:</span>
-              <div className="flex flex-wrap gap-2">
-                {selectedMeds.map((med) => (
-                  <span
-                    key={med}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 text-slate-800 rounded-lg text-xs font-medium border border-slate-200"
-                  >
-                    <Pill className="w-3.5 h-3.5 text-teal-600" />
-                    <span>{med}</span>
-                    <button
-                      onClick={() => removeMed(med)}
-                      className="text-slate-400 hover:text-rose-600 ml-1 cursor-pointer"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
+      {/* Error Message */}
+      {errorMessage && (
+        <Alert variant="emergency" title="Check Error">
+          {errorMessage}
+        </Alert>
+      )}
 
+      {/* Input Section */}
+      <Card className="border-teal-200/80 shadow-xs">
+        <CardHeader className="pb-3 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <Pill className="w-5 h-5 text-teal-600" />
+            <CardTitle className="text-lg">Build Medication Regimen</CardTitle>
+          </div>
+          <CardDescription className="text-xs">
+            Add two or more medications below. You can enter generic names or common Indian trade names.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-6 space-y-6">
+          <MedicationSearchAutocomplete
+            onSelectMedication={handleAddMedication}
+            alreadySelectedNames={selectedMeds.map((m) => m.name)}
+          />
+
+          <SelectedMedicationChips
+            medications={selectedMeds}
+            onRemove={handleRemoveMedication}
+            onClear={handleClearAll}
+          />
+
+          <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-xs text-slate-400">
+              {selectedMeds.length < 2
+                ? 'Add at least 2 medications to check pairwise interactions.'
+                : `${selectedMeds.length} medications selected. Ready for evaluation.`}
+            </div>
             <Button
               onClick={handleCheck}
-              disabled={selectedMeds.length < 2}
+              disabled={selectedMeds.length < 2 || loading}
               isLoading={loading}
-              fullWidth
-              className="mt-2"
+              size="lg"
+              className="w-full sm:w-auto"
             >
-              Check Interactions ({selectedMeds.length} drugs)
+              <span>Check Interactions</span>
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Results */}
-        <Card className={result?.has_severe_warning ? 'border-rose-300' : 'border-slate-200'}>
-          <CardHeader>
-            <CardTitle className="text-base">Interaction Results</CardTitle>
-            <CardDescription className="text-xs">
-              Evidence sources & clinical guidance.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {result ? (
-              <div className="space-y-4">
-                {result.interactions.length > 0 ? (
-                  result.interactions.map((interaction: any, idx: number) => (
-                    <div key={idx} className="p-4 bg-rose-50/60 rounded-xl border border-rose-200 text-xs space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-rose-950">
-                          {interaction.drug_a} + {interaction.drug_b}
-                        </span>
-                        <Badge variant="high" size="sm">{interaction.severity}</Badge>
-                      </div>
-                      <p className="text-slate-700 leading-relaxed">{interaction.clinical_description}</p>
-                      {interaction.management_guidance && (
-                        <p className="text-teal-900 font-medium bg-white/70 p-2 rounded border border-teal-100">
-                          <strong>Management:</strong> {interaction.management_guidance}
-                        </p>
-                      )}
-                      <p className="text-[10px] text-slate-400">Source: {interaction.evidence_source}</p>
-                    </div>
-                  ))
-                ) : (
-                  <Alert variant="info" title="No Documented Interaction Found">
-                    No interaction was found between these medications in the curated dataset.
-                  </Alert>
-                )}
+      {/* Results View */}
+      {result && (
+        <div className="space-y-6 pt-2">
+          {/* Summary Banner */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                Evaluation Findings
+              </span>
+              <h3 className="text-base font-bold text-slate-900">
+                {result.interaction_count === 0
+                  ? 'No Interactions Catalogued in Current Dataset'
+                  : `${result.interaction_count} Potential Interaction(s) Identified`}
+              </h3>
+            </div>
+            <Badge
+              variant={
+                result.has_severe_warning
+                  ? 'emergency'
+                  : result.interaction_count > 0
+                  ? 'warning'
+                  : 'normal'
+              }
+            >
+              {result.has_severe_warning
+                ? 'Severe Warning'
+                : result.interaction_count > 0
+                ? 'Moderate Interaction'
+                : 'No Dataset Hits'}
+            </Badge>
+          </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-500 leading-normal">
-                  <strong>Mandatory Disclaimer:</strong> {result.mandatory_disclaimer}
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-12 text-slate-400 text-xs">
-                Click "Check Interactions" to review pairwise findings.
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+          {/* Interactions List */}
+          {result.interactions.length > 0 && (
+            <div className="space-y-4">
+              {result.interactions.map((interaction, idx) => (
+                <InteractionResultCard key={idx} interaction={interaction} />
+              ))}
+            </div>
+          )}
+
+          {/* Mandatory Disclaimers */}
+          <SafetyDisclaimerCallout
+            mandatoryDisclaimer={result.mandatory_disclaimer}
+            hasInteractions={result.interactions.length > 0}
+          />
+        </div>
+      )}
     </div>
   );
 };
