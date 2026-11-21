@@ -47,7 +47,6 @@ export const App: React.FC = () => {
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
-                <Route path="/research-dashboard" element={<ResearchDashboardPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/safety" element={<SafetyPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
@@ -55,6 +54,7 @@ export const App: React.FC = () => {
                 {/* Protected Healthcare & Personal Health Routes */}
                 <Route element={<ProtectedRoute />}>
                   <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/research-dashboard" element={<ResearchDashboardPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/account" element={<ProfilePage />} />
                   <Route path="/modules/report-explainer" element={<ReportExplainerPage />} />

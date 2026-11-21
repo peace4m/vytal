@@ -34,7 +34,7 @@ export const Header: React.FC = () => {
   const handleSignOut = async () => {
     setUserMenuOpen(false);
     await signOut();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
   const navLinks = [
@@ -45,6 +45,12 @@ export const Header: React.FC = () => {
     { path: '/modules/medication-check', label: t('nav.module4') },
     { path: '/modules/health-summary', label: t('nav.module5') },
     { path: '/research-dashboard', label: t('nav.research') },
+  ];
+
+  const publicLinks = [
+    { path: '/about', label: 'About' },
+    { path: '/safety', label: 'Safety' },
+    { path: '/privacy', label: 'Privacy' },
   ];
 
   const userInitial = userProfile?.fullName ? userProfile.fullName.charAt(0).toUpperCase() : 'U';
@@ -60,7 +66,7 @@ export const Header: React.FC = () => {
 
           {/* Navigation Links for Desktop */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => {
+            {(isAuthenticated ? navLinks : publicLinks).map((link) => {
               const isActive = location.pathname === link.path;
               return (
                 <Link
@@ -117,14 +123,16 @@ export const Header: React.FC = () => {
               </select>
             </div>
 
-            {/* Research Lab Quick Link */}
-            <Link
-              to="/research-dashboard"
-              className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors border border-emerald-200/60 dark:border-emerald-800/60"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>Research Lab</span>
-            </Link>
+            {/* Research Lab Quick Link (Authenticated) */}
+            {isAuthenticated && (
+              <Link
+                to="/research-dashboard"
+                className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors border border-emerald-200/60 dark:border-emerald-800/60"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Research Lab</span>
+              </Link>
+            )}
 
             {/* Authentication Controls */}
             {isAuthenticated ? (

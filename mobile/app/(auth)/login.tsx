@@ -51,10 +51,6 @@ export default function LoginScreen() {
     }
   };
 
-  const handleGuestContinue = () => {
-    router.replace('/(tabs)');
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.scrollContent}>
       <View style={styles.container}>
@@ -72,8 +68,8 @@ export default function LoginScreen() {
         {!isConfigured && (
           <Alert
             variant="info"
-            title="Supabase Auth Setup Notice"
-            message="Configure EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY to enable live cloud authentication. You can tap 'Continue as Guest' below to test all clinical modules immediately."
+            title="Local Security Mode"
+            message="Supabase cloud URL is not configured. Accounts and sessions are secured locally on your device via hardware-backed SecureStore. Set EXPO_PUBLIC_SUPABASE_URL to link cloud authentication."
           />
         )}
 
@@ -138,13 +134,6 @@ export default function LoginScreen() {
               style={styles.socialBtn}
             />
           )}
-
-          <Button
-            title="Continue as Anonymous Guest"
-            onPress={handleGuestContinue}
-            variant="ghost"
-            style={styles.guestBtn}
-          />
         </Card>
 
         {/* Footer: Register Link */}

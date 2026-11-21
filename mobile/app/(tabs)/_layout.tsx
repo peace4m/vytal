@@ -4,11 +4,26 @@
  */
 
 import React from 'react';
-import { Text, StyleSheet, Platform } from 'react-native';
-import { Tabs } from 'expo-router';
+import { Text, StyleSheet, Platform, View, ActivityIndicator } from 'react-native';
+import { Tabs, Redirect } from 'expo-router';
 import { colors } from '../../src/theme/colors';
+import { useAuth } from '../../src/context/AuthContext';
 
 export default function TabsLayout() {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
   return (
     <Tabs
       screenOptions={{
