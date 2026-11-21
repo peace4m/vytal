@@ -223,7 +223,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     clearError();
     if (!isConfigured) {
       setError(
-        'Google OAuth requires configured Supabase credentials. Please supply VITE_SUPABASE_URL and configure Google Client ID in your Supabase dashboard.'
+        'Google OAuth requires configured Supabase credentials. For live evaluation, please use the Email registration form or click "1-Click Demo Login".'
       );
       return;
     }
@@ -244,7 +244,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     clearError();
     if (!isConfigured) {
       setError(
-        'Apple Sign-In requires configured Supabase credentials. Please supply VITE_SUPABASE_URL and configure Apple Developer credentials in your Supabase dashboard.'
+        'Apple Sign-In requires configured Supabase credentials. For live evaluation, please use the Email registration form or click "1-Click Demo Login".'
       );
       return;
     }

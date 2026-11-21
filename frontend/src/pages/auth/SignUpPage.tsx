@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   Check,
   RefreshCw,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
@@ -29,6 +30,7 @@ export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
   const {
     signUpWithEmail,
+    signInWithEmail,
     signInWithGoogle,
     signInWithApple,
     resendVerificationEmail,
@@ -213,6 +215,31 @@ export const SignUpPage: React.FC = () => {
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Join VYTAL for transparent, explainable healthcare analytics.
           </p>
+        </div>
+
+        {/* Live Demo Quick Action */}
+        <div className="p-3.5 rounded-xl bg-teal-50/90 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div>
+            <div className="font-semibold flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+              <span>Instant Demo Access</span>
+            </div>
+            <p className="text-[11px] text-teal-700/80 dark:text-teal-400/80 mt-0.5">
+              Skip manual registration & evaluate all modules directly.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={async () => {
+              await signInWithEmail('demo@vytal.health', 'Password@123');
+              navigate('/dashboard', { replace: true });
+            }}
+            className="text-xs shrink-0 self-start sm:self-auto font-bold border-teal-300 dark:border-teal-700 hover:bg-teal-100/60 dark:hover:bg-teal-900/40"
+          >
+            ⚡ 1-Click Demo Login
+          </Button>
         </div>
 
         {/* Error Alert */}

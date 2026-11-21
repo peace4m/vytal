@@ -62,7 +62,26 @@ export interface StoredLocalUser {
 function getLocalUsers(): StoredLocalUser[] {
   try {
     const raw = localStorage.getItem(LOCAL_USERS_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const users: StoredLocalUser[] = raw ? JSON.parse(raw) : [];
+
+    // Ensure built-in demo clinician account always exists for instant evaluation
+    const demoEmail = 'demo@vytal.health';
+    if (!users.some((u) => u.email.toLowerCase() === demoEmail)) {
+      const demoUser: StoredLocalUser = {
+        id: 'usr_demo_clinician',
+        email: demoEmail,
+        fullName: 'Dr. Rajesh Sharma',
+        passwordHash: btoa('Password@123'),
+        preferredLanguage: 'en',
+        preferredTheme: 'system',
+        emailConfirmed: true,
+        createdAt: '2026-01-01T00:00:00.000Z',
+      };
+      users.push(demoUser);
+      saveLocalUsers(users);
+    }
+
+    return users;
   } catch {
     return [];
   }

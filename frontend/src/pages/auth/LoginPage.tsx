@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, Sparkles } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { VytalLogo } from '@/components/brand/VytalLogo';
@@ -84,6 +84,31 @@ export const LoginPage: React.FC = () => {
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Sign in to access your secure health insights and clinical evaluations.
+          </p>
+        </div>
+
+        {/* Demo Fast-Access Helper Banner */}
+        <div className="p-3.5 rounded-xl bg-teal-50/90 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200 text-xs">
+          <div className="flex items-center justify-between">
+            <div className="font-semibold flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+              <span>Live Evaluation Mode</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('demo@vytal.health');
+                setPassword('Password@123');
+                setLocalError(null);
+                clearError();
+              }}
+              className="text-[11px] underline font-bold text-teal-700 dark:text-teal-300 hover:text-teal-800"
+            >
+              Fill Demo Credentials
+            </button>
+          </div>
+          <p className="mt-1 text-[11px] text-teal-700/80 dark:text-teal-400/80">
+            Evaluating on GitHub Pages? Use <strong>demo@vytal.health</strong> / <strong>Password@123</strong> or click above.
           </p>
         </div>
 
