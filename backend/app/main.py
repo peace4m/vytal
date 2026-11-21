@@ -92,6 +92,16 @@ async def root():
     }
 
 
+@app.get("/health", tags=["System"])
+async def root_health():
+    """Root-level health check endpoint for cloud load balancers and container probes."""
+    return {
+        "status": "healthy",
+        "service": "vytal-backend",
+        "version": settings.APP_VERSION,
+    }
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
