@@ -2,6 +2,7 @@
 
 > **Tagline**: *Your Health, Decoded.*  
 > **Status**: **Fully Implemented & Research-Ready (100% Tests Passing)**  
+> **Live Demo**: 🚀 **[https://peace4m.github.io/vytal/](https://peace4m.github.io/vytal/)**  
 > **Safety Position**: Educational and research prototype. **NOT A MEDICAL DEVICE.** Does not formulate medical diagnoses, prescribe medication, or replace qualified medical professionals.
 
 ---
@@ -14,10 +15,9 @@ The platform integrates two distinct, strictly decoupled computational approache
 1. **Deterministic Clinical Rule Services**: Five core healthcare modules executing audited, transparent, literature-backed clinical guidelines and scoring protocols.
 2. **Independent Machine Learning Research Subsystem**: An isolated data science pipeline evaluating predictive models for early diabetes risk on a South Asian cohort (Sylhet Hospital, $n=520$, UCI ID: 529) with Explainable AI (XAI) feature attributions and Mitchell et al. Model Cards.
 
-### Supported Languages
-- **English (`en`)**
-- **Hindi (`hi`)** — हिन्दी
-- **Odia (`or`)** — ଓଡ଼ିଆ
+### Supported Languages (19 Locales)
+- **Indian Languages (12)**: English (`en`), Hindi (`hi`), Bengali (`bn`), Marathi (`mr`), Telugu (`te`), Tamil (`ta`), Gujarati (`gu`), Urdu (`ur` - RTL), Kannada (`kn`), Odia (`or`), Malayalam (`ml`), Punjabi (`pa`), Assamese (`as`).
+- **Global Languages (7)**: English (`en`), Spanish (`es`), French (`fr`), Arabic (`ar` - RTL), German (`de`), Portuguese (`pt`), Chinese (`zh`).
 
 ---
 
