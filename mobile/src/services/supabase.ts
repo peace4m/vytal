@@ -48,8 +48,11 @@ export const SecureStoreAdapter = {
 };
 
 // Reads from EXPO_PUBLIC environment variables with sandbox fallback
-export const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://placeholder-vytal-project.supabase.co';
-export const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key-configure-in-env';
+export const SUPABASE_URL =
+  process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://veiuxqnpjkfxacjkhpic.supabase.co';
+export const SUPABASE_ANON_KEY =
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlaXV4cW5wamtmeGFjamtocGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTEzMDcsImV4cCI6MjA5NjE2NzMwN30.qvr4ZEgTNIPIA6QrYnVTLCKvU4LqNSrPGyfmfYvwqgM';
 
 export const isSupabaseConfigured = (): boolean => {
   const url = process.env.EXPO_PUBLIC_SUPABASE_URL;

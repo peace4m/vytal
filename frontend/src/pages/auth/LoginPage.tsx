@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, Info } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
@@ -14,7 +14,7 @@ import { VytalLogo } from '@/components/brand/VytalLogo';
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, isConfigured, signInWithEmail, signInWithGoogle, signInWithApple, error: authError, clearError } = useAuth();
+  const { isAuthenticated, signInWithEmail, signInWithGoogle, signInWithApple, error: authError, clearError } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,23 +67,21 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    if (!isConfigured) {
-      setOauthModal('google');
-      return;
-    }
     setIsSubmitting(true);
-    await signInWithGoogle();
+    const result = await signInWithGoogle();
     setIsSubmitting(false);
+    if (result?.error) {
+      setOauthModal('google');
+    }
   };
 
   const handleAppleSignIn = async () => {
-    if (!isConfigured) {
-      setOauthModal('apple');
-      return;
-    }
     setIsSubmitting(true);
-    await signInWithApple();
+    const result = await signInWithApple();
     setIsSubmitting(false);
+    if (result?.error) {
+      setOauthModal('apple');
+    }
   };
 
   const displayError = localError || authError;
@@ -292,27 +290,47 @@ export const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      {/* OAuth Explanation Modal */}
+      {/* OAuth Setup Modal */}
       <Modal
         isOpen={Boolean(oauthModal)}
         onClose={() => setOauthModal(null)}
-        title={oauthModal === 'google' ? 'Google Sign-In Configuration' : 'Apple Sign-In Configuration'}
+        title={oauthModal === 'google' ? 'Enable Real Google Sign-In' : 'Enable Real Apple Sign-In'}
       >
         <div className="space-y-4 text-xs text-slate-600 dark:text-slate-300">
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200">
-            <Info className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
-            <span>
-              Real {oauthModal === 'google' ? 'Google' : 'Apple'} login requires connecting an OAuth Client ID from {oauthModal === 'google' ? 'Google Cloud Console' : 'Apple Developer Portal'}.
+          <div className="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200">
+            <span className="font-semibold block mb-1">
+              Your real Supabase project is connected:
             </span>
+            <code className="text-[11px] font-mono text-teal-700 dark:text-teal-300">peace4m's Project (veiuxqnpjkfxacjkhpic)</code>
           </div>
 
           <p className="leading-relaxed">
-            Because this is an independent live preview, external social OAuth client secrets are not embedded. You can sign in immediately using your email and password above, or create an account with your own name!
+            Real Google Sign-In is connected to your Supabase backend! To finish activating it for your Google account:
           </p>
 
-          <div className="pt-3 flex justify-end">
-            <Button onClick={() => setOauthModal(null)} className="text-xs">
-              Got it, use Email & Password
+          <ol className="list-decimal pl-4 space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+            <li>
+              Open <a href="https://supabase.com/dashboard/project/veiuxqnpjkfxacjkhpic/auth/providers" target="_blank" rel="noreferrer" className="text-teal-600 dark:text-teal-400 font-bold underline">Supabase Auth Providers</a>.
+            </li>
+            <li>Click <strong>Google</strong> and toggle <strong>Enable Google provider</strong> to ON.</li>
+            <li>Paste your <strong>Client ID</strong> & <strong>Secret</strong> from Google Cloud Console.</li>
+            <li>In Google Cloud Console, add this Authorized Redirect URI:
+              <br/>
+              <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-[10px] select-all">https://veiuxqnpjkfxacjkhpic.supabase.co/auth/v1/callback</code>
+            </li>
+          </ol>
+
+          <div className="pt-2 flex justify-between items-center">
+            <a
+              href="https://supabase.com/dashboard/project/veiuxqnpjkfxacjkhpic/auth/providers"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline"
+            >
+              Open Supabase Dashboard →
+            </a>
+            <Button onClick={() => setOauthModal(null)} size="sm" className="text-xs">
+              Close
             </Button>
           </div>
         </div>

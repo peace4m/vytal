@@ -33,8 +33,8 @@ export interface AuthContextType {
     fullName: string,
     preferredLanguage?: string
   ) => Promise<{ error: AuthError | null; user: User | null; requiresVerification?: boolean }>;
-  signInWithGoogle: () => Promise<void>;
-  signInWithApple: () => Promise<void>;
+  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
+  signInWithApple: () => Promise<{ error: AuthError | null }>;
   sendPasswordReset: (email: string) => Promise<{ error: AuthError | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: AuthError | null }>;
   resendVerificationEmail: (email: string) => Promise<{ error: AuthError | null }>;
@@ -221,13 +221,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Google OAuth
   const signInWithGoogle = async () => {
     clearError();
-    if (!isConfigured) {
-      setError(
-        'Google OAuth requires configuring Google Client ID in your Supabase project. To continue, create your account or sign in with your email and password above.'
-      );
-      return;
-    }
-    const redirectTo = `${window.location.origin}/#/dashboard`;
+    const redirectUrl = `${window.location.origin}${window.location.pathname}`;
+    const redirectTo = redirectUrl.endsWith('/') ? `${redirectUrl}#/dashboard` : `${redirectUrl}/#/dashboard`;
     const { error: authErr } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -236,19 +231,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     if (authErr) {
       setError(authErr.message);
+      return { error: authErr };
     }
+    return { error: null };
   };
 
   // Apple OAuth
   const signInWithApple = async () => {
     clearError();
-    if (!isConfigured) {
-      setError(
-        'Apple Sign-In requires configuring Apple Developer credentials in your Supabase project. To continue, create your account or sign in with your email and password above.'
-      );
-      return;
-    }
-    const redirectTo = `${window.location.origin}/#/dashboard`;
+    const redirectUrl = `${window.location.origin}${window.location.pathname}`;
+    const redirectTo = redirectUrl.endsWith('/') ? `${redirectUrl}#/dashboard` : `${redirectUrl}/#/dashboard`;
     const { error: authErr } = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
@@ -257,7 +249,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     if (authErr) {
       setError(authErr.message);
+      return { error: authErr };
     }
+    return { error: null };
   };
 
   // Send Password Reset

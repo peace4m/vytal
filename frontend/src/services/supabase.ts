@@ -9,10 +9,16 @@
 
 import { createClient, SupabaseClient, User, Session, AuthError } from '@supabase/supabase-js';
 
-export const VITE_SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string) || '';
-export const VITE_SUPABASE_ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || '';
+export const VITE_SUPABASE_URL =
+  (import.meta.env.VITE_SUPABASE_URL as string) || 'https://veiuxqnpjkfxacjkhpic.supabase.co';
+export const VITE_SUPABASE_ANON_KEY =
+  (import.meta.env.VITE_SUPABASE_ANON_KEY as string) ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlaXV4cW5wamtmeGFjamtocGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTEzMDcsImV4cCI6MjA5NjE2NzMwN30.qvr4ZEgTNIPIA6QrYnVTLCKvU4LqNSrPGyfmfYvwqgM';
 
 export const isSupabaseConfigured = (): boolean => {
+  if (import.meta.env.MODE === 'test') {
+    return false;
+  }
   return Boolean(
     VITE_SUPABASE_URL &&
     VITE_SUPABASE_ANON_KEY &&

@@ -19,7 +19,6 @@ import {
   ShieldCheck,
   Check,
   RefreshCw,
-  Info,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
@@ -31,7 +30,6 @@ export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
   const {
     isAuthenticated,
-    isConfigured,
     signUpWithEmail,
     signInWithGoogle,
     signInWithApple,
@@ -439,12 +437,9 @@ export const SignUpPage: React.FC = () => {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => {
-                if (!isConfigured) {
-                  setOauthModal('google');
-                } else {
-                  signInWithGoogle();
-                }
+              onClick={async () => {
+                const res = await signInWithGoogle();
+                if (res?.error) setOauthModal('google');
               }}
               className="flex items-center justify-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors"
             >
@@ -471,12 +466,9 @@ export const SignUpPage: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => {
-                if (!isConfigured) {
-                  setOauthModal('apple');
-                } else {
-                  signInWithApple();
-                }
+              onClick={async () => {
+                const res = await signInWithApple();
+                if (res?.error) setOauthModal('apple');
               }}
               className="flex items-center justify-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 shadow-2xs transition-colors"
             >
@@ -506,27 +498,47 @@ export const SignUpPage: React.FC = () => {
         </div>
       </div>
 
-      {/* OAuth Notice Modal */}
+      {/* OAuth Setup Modal */}
       <Modal
         isOpen={Boolean(oauthModal)}
         onClose={() => setOauthModal(null)}
-        title={oauthModal === 'google' ? 'Google Sign-In Configuration' : 'Apple Sign-In Configuration'}
+        title={oauthModal === 'google' ? 'Enable Real Google Sign-In' : 'Enable Real Apple Sign-In'}
       >
         <div className="space-y-4 text-xs text-slate-600 dark:text-slate-300">
-          <div className="flex items-center gap-2 p-3 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200">
-            <Info className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
-            <span>
-              Real {oauthModal === 'google' ? 'Google' : 'Apple'} login requires connecting an OAuth Client ID from {oauthModal === 'google' ? 'Google Cloud Console' : 'Apple Developer Portal'}.
+          <div className="p-3 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200">
+            <span className="font-semibold block mb-1">
+              Your real Supabase project is connected:
             </span>
+            <code className="text-[11px] font-mono text-teal-700 dark:text-teal-300">peace4m's Project (veiuxqnpjkfxacjkhpic)</code>
           </div>
 
           <p className="leading-relaxed">
-            Because this is an independent live preview, external social OAuth client secrets are not embedded. You can create your account directly with your own name, email, and password using the form above!
+            Real Google Sign-In is connected to your Supabase backend! To finish activating it for your Google account:
           </p>
 
-          <div className="pt-3 flex justify-end">
-            <Button onClick={() => setOauthModal(null)} className="text-xs">
-              Got it, use Registration Form
+          <ol className="list-decimal pl-4 space-y-1.5 text-[11px] text-slate-700 dark:text-slate-300">
+            <li>
+              Open <a href="https://supabase.com/dashboard/project/veiuxqnpjkfxacjkhpic/auth/providers" target="_blank" rel="noreferrer" className="text-teal-600 dark:text-teal-400 font-bold underline">Supabase Auth Providers</a>.
+            </li>
+            <li>Click <strong>Google</strong> and toggle <strong>Enable Google provider</strong> to ON.</li>
+            <li>Paste your <strong>Client ID</strong> & <strong>Secret</strong> from Google Cloud Console.</li>
+            <li>In Google Cloud Console, add this Authorized Redirect URI:
+              <br/>
+              <code className="bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded text-[10px] select-all">https://veiuxqnpjkfxacjkhpic.supabase.co/auth/v1/callback</code>
+            </li>
+          </ol>
+
+          <div className="pt-2 flex justify-between items-center">
+            <a
+              href="https://supabase.com/dashboard/project/veiuxqnpjkfxacjkhpic/auth/providers"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline"
+            >
+              Open Supabase Dashboard →
+            </a>
+            <Button onClick={() => setOauthModal(null)} size="sm" className="text-xs">
+              Close
             </Button>
           </div>
         </div>
