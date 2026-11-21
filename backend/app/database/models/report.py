@@ -18,6 +18,12 @@ class LabReportModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=False,
         index=True,
     )
+    user_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
     laboratory_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     report_date_str: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     parsing_engine: Mapped[str] = mapped_column(String(50), default="PyMuPDF", nullable=False)

@@ -3,9 +3,10 @@ Session Database Model
 Anonymous or authenticated user session tracking with privacy expiration.
 """
 
+from typing import Optional
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Boolean, DateTime
+from sqlalchemy import String, Boolean, DateTime, ForeignKey
 from backend.app.database.base import Base, UUIDPrimaryKeyMixin, TimestampMixin
 
 
@@ -21,6 +22,12 @@ class SessionModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         unique=True,
         index=True,
         nullable=False,
+    )
+    user_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("users.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
     )
     expires_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

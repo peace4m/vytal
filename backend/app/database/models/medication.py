@@ -18,6 +18,12 @@ class MedicationCheckModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=False,
         index=True,
     )
+    user_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
     drug_count: Mapped[int] = mapped_column(Integer, nullable=False)
     interaction_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     has_contraindication: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)

@@ -3,6 +3,7 @@ Indian Diabetes Risk Score Model (Module 02)
 Stores validated IDRS parameters, factor points, and risk classification.
 """
 
+from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, Float, ForeignKey
 from backend.app.database.base import Base, UUIDPrimaryKeyMixin, TimestampMixin
@@ -15,6 +16,12 @@ class IDRSAssessmentModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         String(36),
         ForeignKey("sessions.id", ondelete="CASCADE"),
         nullable=False,
+        index=True,
+    )
+    user_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
         index=True,
     )
     # Parameters

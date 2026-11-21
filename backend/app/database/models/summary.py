@@ -3,6 +3,7 @@ Health Summary Model (Module 05)
 Stores synthesized health briefs and export metrics.
 """
 
+from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, JSON, ForeignKey, Text
 from backend.app.database.base import Base, UUIDPrimaryKeyMixin, TimestampMixin
@@ -15,6 +16,12 @@ class HealthSummaryModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         String(36),
         ForeignKey("sessions.id", ondelete="CASCADE"),
         nullable=False,
+        index=True,
+    )
+    user_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
         index=True,
     )
     highest_acuity: Mapped[str] = mapped_column(String(30), nullable=False)

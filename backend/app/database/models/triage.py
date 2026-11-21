@@ -36,6 +36,12 @@ class TriageAssessmentModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
         nullable=False,
         index=True,
     )
+    user_id: Mapped[Optional[str]] = mapped_column(
+        String(64),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
     input_symptoms: Mapped[dict] = mapped_column(JSON, nullable=False)
     primary_acuity: Mapped[str] = mapped_column(String(30), nullable=False)
     emergency_override_triggered: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)

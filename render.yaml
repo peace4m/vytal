@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: vytal-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: singapore # Closest low-latency region to India on Render free tier
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: SUPABASE_URL
+        value: https://veiuxqnpjkfxacjkhpic.supabase.co
+      - key: SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlaXV4cW5wamtmeGFjamtocGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1OTEzMDcsImV4cCI6MjA5NjE2NzMwN30.qvr4ZEgTNIPIA6QrYnVTLCKvU4LqNSrPGyfmfYvwqgM
+      - key: DATABASE_URL
+        sync: false # Set securely in Render dashboard
+      - key: SUPABASE_JWT_SECRET
+        sync: false # Set securely in Render dashboard
+      - key: APP_SECRET_KEY
+        generateValue: true
