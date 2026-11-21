@@ -3,7 +3,7 @@
  * Secure, branded authentication portal with email/password and OAuth providers.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, Sparkles } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
@@ -13,7 +13,7 @@ import { VytalLogo } from '@/components/brand/VytalLogo';
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signInWithEmail, signInWithGoogle, signInWithApple, error: authError, clearError } = useAuth();
+  const { isAuthenticated, signInWithEmail, signInWithGoogle, signInWithApple, error: authError, clearError } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,6 +23,13 @@ export const LoginPage: React.FC = () => {
   const [localError, setLocalError] = useState<string | null>(null);
 
   const from = (location.state as any)?.from?.pathname || '/dashboard';
+
+  // Automatically redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const validateForm = (): boolean => {
     setLocalError(null);

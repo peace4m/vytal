@@ -4,7 +4,7 @@
  * terms consent, duplicate detection, and email verification handling.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -29,6 +29,7 @@ export const SignUpPage: React.FC = () => {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const {
+    isAuthenticated,
     signUpWithEmail,
     signInWithEmail,
     signInWithGoogle,
@@ -37,6 +38,13 @@ export const SignUpPage: React.FC = () => {
     error: authError,
     clearError,
   } = useAuth();
+
+  // Automatically redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
