@@ -35,6 +35,22 @@
     "checkInteractions": "Check Interactions",
     "reset": "Reset Form"
   },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "welcomeBack": "Welcome Back",
+    "createAccount": "Create Account",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "rememberMe": "Remember session",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "profileSettings": "Profile & Settings",
+    "deleteAccount": "Delete Account"
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",

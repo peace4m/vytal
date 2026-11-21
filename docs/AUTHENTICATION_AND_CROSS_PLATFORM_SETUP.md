@@ -34,7 +34,14 @@ This document details the configuration for running VYTAL across **Android, iOS,
    - Copy **JWT Secret** (under JWT Settings)
 
 ### Step B: Configure Frontend Environment
-In `mobile/.env` (or set as environment variables):
+In `frontend/.env` (Web Vite App):
+```env
+VITE_API_BASE_URL=http://127.0.0.1:8000/api/v1
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+In `mobile/.env` (Expo Native & Web):
 ```env
 EXPO_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
@@ -49,6 +56,62 @@ SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your-anon-key-here
 SUPABASE_JWT_SECRET=your-jwt-secret-here
 SUPABASE_AUDIENCE=authenticated
+```
+
+---
+
+## 3. Database Row-Level Security (RLS) Policies
+
+When deploying to Supabase PostgreSQL, execute the following SQL migration in the Supabase SQL Editor to enforce patient data isolation:
+
+```sql
+-- 1. Enable Row-Level Security across all health tables
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE lab_reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE idrs_assessments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE triage_assessments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE medication_checks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE health_summaries ENABLE ROW LEVEL SECURITY;
+
+-- 2. User Profile Policy (Strict Self-Access)
+CREATE POLICY "Users can only read and update own profile"
+  ON users
+  FOR ALL
+  USING (auth.uid() = id)
+  WITH CHECK (auth.uid() = id);
+
+-- 3. Sessions Policy
+CREATE POLICY "Users access own sessions"
+  ON sessions
+  FOR ALL
+  USING (auth.uid() = user_id OR user_id IS NULL);
+
+-- 4. Healthcare Data Isolation Policies
+CREATE POLICY "Users access own lab reports"
+  ON lab_reports
+  FOR ALL
+  USING (session_id IN (SELECT id FROM sessions WHERE user_id = auth.uid()));
+
+CREATE POLICY "Users access own IDRS assessments"
+  ON idrs_assessments
+  FOR ALL
+  USING (session_id IN (SELECT id FROM sessions WHERE user_id = auth.uid()));
+
+CREATE POLICY "Users access own symptom triage logs"
+  ON triage_assessments
+  FOR ALL
+  USING (session_id IN (SELECT id FROM sessions WHERE user_id = auth.uid()));
+
+CREATE POLICY "Users access own medication reviews"
+  ON medication_checks
+  FOR ALL
+  USING (session_id IN (SELECT id FROM sessions WHERE user_id = auth.uid()));
+
+CREATE POLICY "Users access own consolidated health summaries"
+  ON health_summaries
+  FOR ALL
+  USING (session_id IN (SELECT id FROM sessions WHERE user_id = auth.uid()));
 ```
 
 ---

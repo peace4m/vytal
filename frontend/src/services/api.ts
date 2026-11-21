@@ -14,7 +14,9 @@ import {
   getDemoResearchOverview,
   getDemoFeatureImportance,
   predictDemoResearch,
+  generateDemoHealthSummary,
 } from './mockDemoBackend';
+import { localAuthService } from './supabase';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1';
 
@@ -22,6 +24,27 @@ const SESSION_TOKEN_KEY = 'vytal_session_token';
 
 export const getStoredSessionToken = (): string | null => {
   return localStorage.getItem(SESSION_TOKEN_KEY);
+};
+
+export const getStoredAuthToken = (): string | null => {
+  try {
+    const localSess = localStorage.getItem('vytal_local_auth_session');
+    if (localSess) {
+      const parsed = JSON.parse(localSess);
+      if (parsed.access_token) return parsed.access_token;
+    }
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sb-') && key.endsWith('-auth-token')) {
+        const item = localStorage.getItem(key);
+        if (item) {
+          const parsed = JSON.parse(item);
+          if (parsed.access_token) return parsed.access_token;
+        }
+      }
+    }
+  } catch {}
+  return null;
 };
 
 export const setStoredSessionToken = (token: string): void => {
@@ -74,7 +97,11 @@ function handleClientSideFallback<T>(endpoint: string, options: RequestInit = {}
 
   // 4. Module 03: Symptom Triage
   if (cleanEndpoint === 'triage/evaluate') {
-    return evaluateDemoTriage(body.reported_symptoms || [], body.age, body.is_pregnant) as unknown as T;
+    const params = new URLSearchParams(endpoint.split('?')[1] || '');
+    const lang = params.get('lang') || 'en';
+    const symptoms = body.primary_symptoms || body.reported_symptoms || [];
+    const attrs = body.symptom_attributes || {};
+    return evaluateDemoTriage(symptoms, attrs, lang) as unknown as T;
   }
 
   // 5. Module 04: Medication Interactions
@@ -85,7 +112,9 @@ function handleClientSideFallback<T>(endpoint: string, options: RequestInit = {}
   }
 
   if (cleanEndpoint === 'medications/check') {
-    return checkDemoInteractions(body.medications || []) as unknown as T;
+    const params = new URLSearchParams(endpoint.split('?')[1] || '');
+    const lang = params.get('lang') || 'en';
+    return checkDemoInteractions(body.medications || [], lang) as unknown as T;
   }
 
   // 6. Research Subsystem
@@ -102,39 +131,128 @@ function handleClientSideFallback<T>(endpoint: string, options: RequestInit = {}
   }
 
   // 7. Module 01: Report Explainer Fallbacks
-  if (cleanEndpoint === 'report/manual-entry' || cleanEndpoint === 'report/confirm') {
+  if (cleanEndpoint === 'reports/upload' || cleanEndpoint === 'report/upload') {
     return {
-      status: 'confirmed',
-      session_token: 'demo-token',
-      observations: body.observations || [
+      report_id: `rep-${Date.now().toString(36)}`,
+      file_name: 'Laboratory_Investigation_Report.pdf',
+      extracted_items: [
         {
-          test_name: 'Fasting Blood Glucose',
-          canonical_test_key: 'fbg',
-          numeric_value: 118,
+          temp_id: 'ext-1',
+          analyte_name: 'Fasting Blood Glucose',
+          observed_value: 126,
+          observed_value_str: '126 mg/dL',
           unit: 'mg/dL',
-          reference_interval_low: 70,
-          reference_interval_high: 99,
-          classification: 'HIGH',
-          plain_explanation: 'Your fasting blood sugar is slightly above standard normal ranges, indicating impaired fasting glucose.',
+          lab_reference_range: '70 - 99 mg/dL',
+          status_flag: 'HIGH',
+        },
+        {
+          temp_id: 'ext-2',
+          analyte_name: 'Glycated Hemoglobin (HbA1c)',
+          observed_value: 6.8,
+          observed_value_str: '6.8 %',
+          unit: '%',
+          lab_reference_range: '4.0 - 5.6 %',
+          status_flag: 'HIGH',
+        },
+        {
+          temp_id: 'ext-3',
+          analyte_name: 'Serum Creatinine',
+          observed_value: 0.9,
+          observed_value_str: '0.9 mg/dL',
+          unit: 'mg/dL',
+          lab_reference_range: '0.6 - 1.2 mg/dL',
+          status_flag: 'NORMAL',
         },
       ],
+      warning_disclaimer: 'Extracted with standard clinical OCR heuristics. Please review and confirm every value.',
+    } as unknown as T;
+  }
+
+  if (
+    cleanEndpoint === 'reports/confirm' ||
+    cleanEndpoint === 'report/confirm' ||
+    cleanEndpoint === 'report/manual-entry'
+  ) {
+    const confirmedItems = body.confirmed_items || body.observations || [];
+    const explanations = confirmedItems.map((item: any) => {
+      const isHigh = item.status_flag === 'HIGH';
+      return {
+        analyte_name: item.analyte_name,
+        observed_value_str: item.observed_value_str || `${item.observed_value} ${item.unit || ''}`.trim(),
+        lab_reference_range: item.lab_reference_range,
+        status_flag: item.status_flag,
+        plain_language_explanation: isHigh
+          ? `${item.analyte_name} is above the laboratory reference interval (${item.lab_reference_range || 'standard range'}). Elevated values warrant primary physician consultation.`
+          : `${item.analyte_name} is within the laboratory reference interval (${item.lab_reference_range || 'standard range'}).`,
+        uncertainty_disclaimer: 'Clinical reference interpretation only. Never constitutes a formal disease diagnosis.',
+      };
+    });
+
+    return {
+      status: 'confirmed',
+      report_id: body.report_id || `rep-${Date.now().toString(36)}`,
+      session_token: 'demo-token',
+      observations: confirmedItems,
+      explanations,
       disclaimer: 'EDUCATIONAL REFERENCE ONLY. NOT A DIAGNOSIS.',
     } as unknown as T;
   }
 
   // 8. Module 05: Health Summary
-  if (cleanEndpoint === 'health-summary/synthesize') {
+  if (
+    cleanEndpoint === 'summary/generate' ||
+    cleanEndpoint === 'health-summary/synthesize' ||
+    cleanEndpoint === 'summary'
+  ) {
+    const params = new URLSearchParams(endpoint.split('?')[1] || '');
+    const lang = params.get('lang') || 'en';
+    return generateDemoHealthSummary(lang) as unknown as T;
+  }
+
+  if (cleanEndpoint === 'summary/export-pdf') {
+    // Generate simple text-based clinical PDF data URI fallback
+    const pdfData =
+      'data:application/pdf;base64,JVBERi0xLjQKJcTl8uXrp/Og0MTGCjEgMCBvYmoKPDwgL1R5cGUgL0NhdGFsb2cgL1BhZ2VzIDIgMCBSID4+CmVuZG9iagoyIDAgb2JqCjw8IC9UeXBlIC9QYWdlcyAvS2lkcyBbMyAwIFJdIC9Db3VudCAxID4+CmVuZG9iagozIDAgb2JqCjw8IC9UeXBlIC9QYWdlIC9QYXJlbnQgMiAwIFIgL01lZGlhQm94IFswIDAgNjEyIDc5Ml0gL0NvbnRlbnRzIDQgMCBSID4+CmVuZG9iago0IDAgb2JqCjw8IC9MZW5ndGggNTUgPj4Kc3RyZWFtCkJUCi9GMSAxMiBUZgoxMDAgNzAwIFRECihWWVRBTCBDbGluaWNhbCBIZWFsdGggU3VtbWFyeSBCcmllZikgVGoKRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDA2OCAwMDAwMCBuIAowMDAwMDAwMTIxIDAwMDAwIG4gCjAwMDAwMDAyMjEgMDAwMDAgbiAKdHJhaWxlcgo8PCAvUm9vdCAxIDAgUiAvU2l6ZSA1ID4+CnN0YXJ0eHJlZgoxMzkxCiUlRU9G';
+    return pdfData as unknown as T;
+  }
+
+  // 9. Users / Profile Endpoints
+  if (cleanEndpoint === 'users/me') {
+    const session = localAuthService.getCurrentSession();
+    if (!session || !session.user) {
+      throw new Error('Authentication credentials were not provided. Please log in.');
+    }
     return {
-      session_token: 'demo-token',
-      synthesis_timestamp: new Date().toISOString(),
-      report_findings: [],
-      idrs_result: null,
-      triage_findings: null,
-      medication_alerts: [],
-      cross_module_insights: [
-        'Live interactive client session active. All modules compute directly using verified clinical and research formulas.',
-      ],
-      safety_disclaimer: 'EDUCATIONAL AND RESEARCH PROTOTYPE ONLY. NOT A MEDICAL DEVICE.',
+      id: session.user.id,
+      email: session.user.email,
+      preferred_language: session.user.user_metadata?.preferred_language || 'en',
+      is_active: true,
+      created_at: session.user.created_at,
+    } as unknown as T;
+  }
+
+  if (cleanEndpoint === 'users/me/preferences') {
+    const session = localAuthService.getCurrentSession();
+    if (!session || !session.user) {
+      throw new Error('Authentication credentials were not provided. Please log in.');
+    }
+    if (body.preferred_language) {
+      localAuthService.updateUser({ preferredLanguage: body.preferred_language });
+    }
+    return {
+      id: session.user.id,
+      email: session.user.email,
+      preferred_language: body.preferred_language || 'en',
+      is_active: true,
+      created_at: session.user.created_at,
+    } as unknown as T;
+  }
+
+  if (cleanEndpoint === 'users/me/account') {
+    localAuthService.deleteAccount();
+    return {
+      status: 'success',
+      message: 'User account has been deleted in accordance with data privacy guidelines.',
     } as unknown as T;
   }
 
@@ -145,15 +263,20 @@ export async function apiClient<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = getStoredSessionToken();
+  const sessionToken = getStoredSessionToken();
+  const authToken = getStoredAuthToken();
   const headers = new Headers(options.headers || {});
 
   if (!headers.has('Content-Type') && !(options.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json');
   }
 
-  if (token && !headers.has('X-Session-Token')) {
-    headers.set('X-Session-Token', token);
+  if (sessionToken && !headers.has('X-Session-Token')) {
+    headers.set('X-Session-Token', sessionToken);
+  }
+
+  if (authToken && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${authToken}`);
   }
 
   const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;

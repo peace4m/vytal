@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Alert';
-import { RotateCcw, Loader2, ShieldCheck } from 'lucide-react';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
+import { RotateCcw, Loader2, ShieldCheck, Trash2 } from 'lucide-react';
 import { apiClient } from '@/services/api';
 import { ExecutiveBriefHeader } from '@/modules/health-summary/ExecutiveBriefHeader';
 import { CrossModuleInsights, CrossModuleInsightItem } from '@/modules/health-summary/CrossModuleInsights';
@@ -47,6 +48,16 @@ export const HealthSummaryPage: React.FC = () => {
     }
   };
 
+  const clearSessionData = () => {
+    if (window.confirm('Clear all module assessments stored in this session? This resets Lab, IDRS, Triage, and Med records.')) {
+      localStorage.removeItem('vytal_assessment_lab');
+      localStorage.removeItem('vytal_assessment_idrs');
+      localStorage.removeItem('vytal_assessment_triage');
+      localStorage.removeItem('vytal_assessment_meds');
+      fetchSummary();
+    }
+  };
+
   useEffect(() => {
     fetchSummary();
   }, [currentLang]);
@@ -74,20 +85,32 @@ export const HealthSummaryPage: React.FC = () => {
           </p>
         </div>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchSummary}
-          disabled={loading}
-          className="self-start sm:self-auto text-slate-600"
-        >
-          {loading ? (
-            <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
-          ) : (
-            <RotateCcw className="w-4 h-4 mr-1.5" />
-          )}
-          Refresh Summary
-        </Button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={clearSessionData}
+            title="Clear stored session data"
+            className="text-slate-500 hover:text-rose-600"
+          >
+            <Trash2 className="w-4 h-4 mr-1.5" />
+            Clear Session
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchSummary}
+            disabled={loading}
+            className="text-slate-600"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+            ) : (
+              <RotateCcw className="w-4 h-4 mr-1.5" />
+            )}
+            Refresh Summary
+          </Button>
+        </div>
       </div>
 
       {/* Safety Notice */}
@@ -114,35 +137,38 @@ export const HealthSummaryPage: React.FC = () => {
       )}
 
       {summary && (
-        <div className="space-y-8">
-          {/* Executive Brief Header & Download */}
-          <ExecutiveBriefHeader
-            summaryId={summary.summary_id}
-            generatedAt={summary.generated_at}
-            highestAcuity={summary.highest_acuity}
-            pdfExportUrl={summary.pdf_export_url}
-          />
+        <ErrorBoundary sectionName="Vytal360 Health Summary" onReset={fetchSummary}>
+          <div className="space-y-8">
+            {/* Executive Brief Header & Download */}
+            <ExecutiveBriefHeader
+              summaryId={summary.summary_id}
+              generatedAt={summary.generated_at}
+              highestAcuity={summary.highest_acuity}
+              pdfExportUrl={summary.pdf_export_url}
+              summaryData={summary}
+            />
 
-          {/* Cross-Module Synthesized Observations */}
-          <CrossModuleInsights insights={summary.cross_module_insights} />
+            {/* Cross-Module Synthesized Observations */}
+            <CrossModuleInsights insights={summary.cross_module_insights} />
 
-          {/* Module-by-Module Audit Trail Accordion */}
-          <ModuleFindingsAccordion
-            module01={summary.module_01_report}
-            module02={summary.module_02_idrs}
-            module03={summary.module_03_triage}
-            module04={summary.module_04_medications}
-          />
+            {/* Module-by-Module Audit Trail Accordion */}
+            <ModuleFindingsAccordion
+              module01={summary.module_01_report}
+              module02={summary.module_02_idrs}
+              module03={summary.module_03_triage}
+              module04={summary.module_04_medications}
+            />
 
-          {/* Final Legal & Clinical Safety Disclaimer */}
-          <div className="p-5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-500 leading-relaxed space-y-1.5 shadow-2xs">
-            <div className="flex items-center gap-1.5 font-bold text-slate-700">
-              <ShieldCheck className="w-4 h-4 text-teal-600" />
-              <span>Mandatory Decision-Support Boundary Notice</span>
+            {/* Final Legal & Clinical Safety Disclaimer */}
+            <div className="p-5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-500 leading-relaxed space-y-1.5 shadow-2xs">
+              <div className="flex items-center gap-1.5 font-bold text-slate-700">
+                <ShieldCheck className="w-4 h-4 text-teal-600" />
+                <span>Mandatory Decision-Support Boundary Notice</span>
+              </div>
+              <p>{summary.mandatory_safety_disclaimer}</p>
             </div>
-            <p>{summary.mandatory_safety_disclaimer}</p>
           </div>
-        </div>
+        </ErrorBoundary>
       )}
     </div>
   );

@@ -35,6 +35,22 @@
     "checkInteractions": "ଔଷଧ ପ୍ରଭାବ ଯାଞ୍ଚ କରନ୍ତୁ",
     "reset": "ରିସେଟ୍ କରନ୍ତୁ"
   },
+  "auth": {
+    "signIn": "ସାଇନ୍ ଇନ୍ କରନ୍ତୁ",
+    "signUp": "ଖାତା ଖୋଲନ୍ତୁ",
+    "signOut": "ଲଗ୍ ଆଉଟ୍",
+    "welcomeBack": "ପୁନର୍ବାର ସ୍ୱାଗତ",
+    "createAccount": "ନୂତନ ଖାତା ଖୋଲନ୍ତୁ",
+    "fullName": "ପୂରା ନାମ",
+    "email": "ଇମେଲ୍ ଠିକଣା",
+    "password": "ପାସୱାର୍ଡ",
+    "confirmPassword": "ପାସୱାର୍ଡ ନିଶ୍ଚିତ କରନ୍ତୁ",
+    "rememberMe": "ମନେ ରଖନ୍ତୁ",
+    "forgotPassword": "ପାସୱାର୍ଡ ଭୁଲିଗଲେ?",
+    "resetPassword": "ପାସୱାର୍ଡ ରିସେଟ୍ କରନ୍ତୁ",
+    "profileSettings": "ପ୍ରୋଫାଇଲ୍ ଏବଂ ସେଟିଂସ୍",
+    "deleteAccount": "ଖାତା ହଟାନ୍ତୁ"
+  },
   "common": {
     "loading": "ଲୋଡ୍ ହେଉଛି...",
     "error": "ଏକ ତ୍ରୁଟି ଘଟିଛି",

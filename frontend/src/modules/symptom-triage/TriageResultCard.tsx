@@ -28,13 +28,13 @@ interface TriageResultCardProps {
 
 export const TriageResultCard: React.FC<TriageResultCardProps> = ({ result }) => {
   const {
-    primary_acuity,
-    emergency_override_triggered,
-    action_required,
-    triggered_rules,
-    safety_netting,
-    uncertainty_notes,
-  } = result;
+    primary_acuity = 'ROUTINE_CLINICAL',
+    emergency_override_triggered = false,
+    action_required = 'Seek standard clinical consultation.',
+    triggered_rules = [],
+    safety_netting = 'If symptoms rapidly worsen, call emergency medical services immediately.',
+    uncertainty_notes = [],
+  } = result || {};
 
   const isEmergency = emergency_override_triggered || primary_acuity === 'EMERGENCY';
   const isHighAcuity = primary_acuity === 'HIGH_ACUITY';
@@ -51,19 +51,21 @@ export const TriageResultCard: React.FC<TriageResultCardProps> = ({ result }) =>
     ? 'HIGH ACUITY (URGENT EVALUATION)'
     : 'ROUTINE CLINICAL EVALUATION';
 
+  const displayId = result?.triage_id ? String(result.triage_id).slice(0, 8) : 'CLINICAL';
+
   return (
     <div className="space-y-6">
       {/* Acuity Status & Action Card */}
       <Card
         className={`shadow-md border-2 ${
           isEmergency
-            ? 'border-rose-400 bg-rose-50/30'
+            ? 'border-rose-400 bg-rose-50/30 dark:bg-rose-950/30 dark:border-rose-800'
             : isHighAcuity
-            ? 'border-amber-400 bg-amber-50/30'
-            : 'border-teal-200 bg-white'
+            ? 'border-amber-400 bg-amber-50/30 dark:bg-amber-950/30 dark:border-amber-800'
+            : 'border-teal-200 dark:border-teal-800 bg-white dark:bg-[#111726]'
         }`}
       >
-        <CardHeader className="pb-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-2.5">
             <div
               className={`p-2 rounded-lg ${
@@ -77,7 +79,7 @@ export const TriageResultCard: React.FC<TriageResultCardProps> = ({ result }) =>
               <Stethoscope className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 Determined Clinical Acuity
               </span>
               <div className="flex items-center gap-2">
@@ -86,19 +88,19 @@ export const TriageResultCard: React.FC<TriageResultCardProps> = ({ result }) =>
             </div>
           </div>
 
-          <span className="text-xs font-mono text-slate-400">
-            ID: {result.triage_id.slice(0, 8)}
+          <span className="text-xs font-mono text-slate-400 dark:text-slate-500">
+            ID: {displayId}
           </span>
         </CardHeader>
 
         <CardContent className="p-5 space-y-4">
           <div className="space-y-1.5">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
               Recommended Clinical Action
             </span>
             <p
               className={`text-base font-bold leading-relaxed ${
-                isEmergency ? 'text-rose-950' : isHighAcuity ? 'text-amber-950' : 'text-slate-900'
+                isEmergency ? 'text-rose-950 dark:text-rose-200' : isHighAcuity ? 'text-amber-950 dark:text-amber-200' : 'text-slate-900 dark:text-slate-100'
               }`}
             >
               {action_required}
@@ -106,18 +108,18 @@ export const TriageResultCard: React.FC<TriageResultCardProps> = ({ result }) =>
           </div>
 
           {/* Safety Netting */}
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-              <Clock className="w-3.5 h-3.5 text-teal-600" />
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-800 space-y-1">
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <Clock className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
               <span>Mandatory Safety-Netting Advice</span>
             </div>
-            <p className="text-xs text-slate-600 leading-relaxed">{safety_netting}</p>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{safety_netting}</p>
           </div>
         </CardContent>
       </Card>
 
       {/* Uncertainty Notice if applicable */}
-      {uncertainty_notes.length > 0 && (
+      {uncertainty_notes && uncertainty_notes.length > 0 && (
         <Alert variant="warning" title="Clinical Uncertainty / Missing Information Disclosed">
           <ul className="list-disc list-inside space-y-1 text-xs">
             {uncertainty_notes.map((note, idx) => (
@@ -128,37 +130,37 @@ export const TriageResultCard: React.FC<TriageResultCardProps> = ({ result }) =>
       )}
 
       {/* Triggered Decision Rules & Evidence Register */}
-      <Card className="border-slate-200">
-        <CardHeader className="pb-3 border-b border-slate-100">
+      <Card className="border-slate-200 dark:border-slate-800">
+        <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-teal-600" />
-            <CardTitle className="text-base">
+            <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+            <CardTitle className="text-base text-slate-900 dark:text-slate-100">
               Triggered Clinical Rules & Evidence Audit Trail
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent className="p-5 space-y-4">
-          {triggered_rules.map((rule, idx) => (
+          {(triggered_rules || []).map((rule, idx) => (
             <div
               key={idx}
-              className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/60 space-y-2.5 text-sm"
+              className="p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/60 space-y-2.5 text-sm"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                <span className="font-bold text-slate-900">{rule.rule_name}</span>
-                <span className="font-mono text-xs px-2 py-0.5 rounded bg-slate-200/80 text-slate-700 w-fit">
+                <span className="font-bold text-slate-900 dark:text-slate-100">{rule.rule_name}</span>
+                <span className="font-mono text-xs px-2 py-0.5 rounded bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-200 w-fit">
                   {rule.rule_id}
                 </span>
               </div>
 
-              <p className="text-xs text-slate-700 leading-relaxed">
-                <span className="font-semibold text-slate-900">Clinical Logic: </span>
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                <span className="font-semibold text-slate-900 dark:text-slate-100">Clinical Logic: </span>
                 {rule.reason}
               </p>
 
-              <div className="pt-2 border-t border-slate-200 text-xs text-slate-500 flex items-start gap-1.5">
-                <Info className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1.5">
+                <Info className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0 mt-0.5" />
                 <span>
-                  <strong className="text-slate-700">Source: </strong>
+                  <strong className="text-slate-700 dark:text-slate-300">Source: </strong>
                   {rule.evidence_source}
                 </span>
               </div>

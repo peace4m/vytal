@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Alert';
 import { RotateCcw, Stethoscope, ArrowRight } from 'lucide-react';
 import { apiClient } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 import { SymptomSelector, SymptomItem } from '@/modules/symptom-triage/SymptomSelector';
 import { DynamicQuestionFlow, FollowUpQuestion } from '@/modules/symptom-triage/DynamicQuestionFlow';
 import { EmergencyOverrideBanner } from '@/modules/symptom-triage/EmergencyOverrideBanner';
 import { TriageResultCard, TriageResultData } from '@/modules/symptom-triage/TriageResultCard';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 const FALLBACK_SYMPTOMS: SymptomItem[] = [
   {
@@ -128,6 +130,7 @@ const FALLBACK_SYMPTOMS: SymptomItem[] = [
 
 export const SymptomTriagePage: React.FC = () => {
   const { i18n } = useTranslation();
+  const { user } = useAuth();
   const currentLang = i18n.language || 'en';
 
   const [symptomsCatalog, setSymptomsCatalog] = useState<SymptomItem[]>(FALLBACK_SYMPTOMS);
@@ -188,6 +191,11 @@ export const SymptomTriagePage: React.FC = () => {
         }),
       });
       setResult(data);
+      try {
+        localStorage.setItem('vytal_assessment_triage', JSON.stringify({ ...data, user_id: user?.id }));
+      } catch {
+        // Ignore local storage error
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Failed to evaluate symptom triage rules.');
     } finally {
@@ -200,6 +208,11 @@ export const SymptomTriagePage: React.FC = () => {
     setAttributes({});
     setResult(null);
     setErrorMessage(null);
+    try {
+      localStorage.removeItem('vytal_assessment_triage');
+    } catch {
+      // Ignore
+    }
   };
 
   return (
@@ -241,11 +254,13 @@ export const SymptomTriagePage: React.FC = () => {
 
       {/* Emergency Override Banner if triggered */}
       {result && result.emergency_override_triggered && (
-        <EmergencyOverrideBanner
-          actionText={result.action_required}
-          safetyNetting={result.safety_netting}
-          ruleNames={result.triggered_rules.map((r) => r.rule_name)}
-        />
+        <ErrorBoundary sectionName="Emergency Alert Banner">
+          <EmergencyOverrideBanner
+            actionText={result.action_required}
+            safetyNetting={result.safety_netting}
+            ruleNames={(result.triggered_rules || []).map((r) => r.rule_name)}
+          />
+        </ErrorBoundary>
       )}
 
       {/* Error Notice */}
@@ -309,7 +324,9 @@ export const SymptomTriagePage: React.FC = () => {
         {/* Results Component */}
         {result && (
           <div className="space-y-6 pt-4">
-            <TriageResultCard result={result} />
+            <ErrorBoundary sectionName="SymptomSense Assessment Results">
+              <TriageResultCard result={result} />
+            </ErrorBoundary>
           </div>
         )}
       </div>

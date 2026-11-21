@@ -7,11 +7,13 @@ import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/Alert';
 import { Ruler, Activity } from 'lucide-react';
 import { apiClient } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 import { WaistHelperModal } from '@/modules/risk-score/WaistHelperModal';
 import { IDRSBreakdownVisualizer, IDRSResultData } from '@/modules/risk-score/IDRSBreakdownVisualizer';
 
 export const IDRSPage: React.FC = () => {
   const { i18n } = useTranslation();
+  const { user } = useAuth();
 
   const [age, setAge] = useState<number>(45);
   const [gender, setGender] = useState<'male' | 'female'>('male');
@@ -40,6 +42,11 @@ export const IDRSPage: React.FC = () => {
         }),
       });
       setResult(data);
+      try {
+        localStorage.setItem('vytal_assessment_idrs', JSON.stringify({ ...data, user_id: user?.id }));
+      } catch {
+        // Ignore
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Calculation error');
     } finally {

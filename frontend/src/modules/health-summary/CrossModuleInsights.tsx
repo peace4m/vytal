@@ -16,8 +16,8 @@ interface CrossModuleInsightsProps {
   insights: CrossModuleInsightItem[];
 }
 
-export const CrossModuleInsights: React.FC<CrossModuleInsightsProps> = ({ insights }) => {
-  if (insights.length === 0) return null;
+export const CrossModuleInsights: React.FC<CrossModuleInsightsProps> = ({ insights = [] }) => {
+  if (!insights || insights.length === 0) return null;
 
   return (
     <div className="space-y-4">

@@ -47,10 +47,10 @@ interface ModuleFindingsAccordionProps {
 }
 
 export const ModuleFindingsAccordion: React.FC<ModuleFindingsAccordionProps> = ({
-  module01,
-  module02,
-  module03,
-  module04,
+  module01 = { has_data: false, confirmed_observations_count: 0, observations: [] },
+  module02 = { has_data: false },
+  module03 = { has_data: false },
+  module04 = { has_data: false, total_medications: 0, interaction_count: 0, has_severe_warning: false },
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     mod01: true,
@@ -63,39 +63,44 @@ export const ModuleFindingsAccordion: React.FC<ModuleFindingsAccordionProps> = (
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const m1 = module01 || { has_data: false, confirmed_observations_count: 0, observations: [] };
+  const m2 = module02 || { has_data: false };
+  const m3 = module03 || { has_data: false };
+  const m4 = module04 || { has_data: false, total_medications: 0, interaction_count: 0, has_severe_warning: false };
+
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-bold text-slate-900">
+      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
         Module-by-Module Audit Trail
       </h3>
 
       {/* Module 01 */}
-      <Card className="border-slate-200 shadow-2xs">
+      <Card className="border-slate-200 dark:border-slate-800 shadow-2xs">
         <CardHeader
           onClick={() => toggleSection('mod01')}
-          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 transition-colors flex flex-row items-center justify-between"
+          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors flex flex-row items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-teal-50 text-teal-700">
+            <div className="p-2 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300">
               <FileText className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-slate-900">
+                <span className="font-bold text-sm text-slate-900 dark:text-slate-100">
                   Module 01: Confirmed Laboratory Observations
                 </span>
-                <Badge variant={module01.has_data ? 'normal' : 'neutral'} size="sm">
-                  {module01.has_data ? `${module01.confirmed_observations_count} tests` : 'No Data'}
+                <Badge variant={m1.has_data ? 'normal' : 'neutral'} size="sm">
+                  {m1.has_data ? `${m1.confirmed_observations_count || (m1.observations || []).length} tests` : 'No Data'}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">Extracted and user-verified laboratory findings</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">Extracted and user-verified laboratory findings</p>
             </div>
           </div>
           {openSections.mod01 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
         </CardHeader>
         {openSections.mod01 && (
-          <CardContent className="p-5 border-t border-slate-100">
-            {module01.has_data && module01.observations.length > 0 ? (
+          <CardContent className="p-5 border-t border-slate-100 dark:border-slate-800">
+            {m1.has_data && Array.isArray(m1.observations) && m1.observations.length > 0 ? (
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -107,12 +112,12 @@ export const ModuleFindingsAccordion: React.FC<ModuleFindingsAccordionProps> = (
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {module01.observations.map((obs, idx) => (
+                  {m1.observations.map((obs, idx) => (
                     <TableRow key={idx}>
-                      <TableCell className="font-semibold text-slate-900">{obs.analyte_name}</TableCell>
+                      <TableCell className="font-semibold text-slate-900 dark:text-slate-100">{obs.analyte_name}</TableCell>
                       <TableCell className="font-mono">{obs.value}</TableCell>
                       <TableCell>{obs.unit}</TableCell>
-                      <TableCell className="text-slate-500">{obs.reference_range || 'Not printed'}</TableCell>
+                      <TableCell className="text-slate-500 dark:text-slate-400">{obs.reference_range || 'Not printed'}</TableCell>
                       <TableCell>
                         <Badge
                           variant={obs.status === 'HIGH' || obs.status === 'ABNORMAL' ? 'high' : 'normal'}
@@ -126,127 +131,127 @@ export const ModuleFindingsAccordion: React.FC<ModuleFindingsAccordionProps> = (
                 </TableBody>
               </Table>
             ) : (
-              <p className="text-xs text-slate-400 italic">No laboratory reports confirmed in this session.</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 italic">No laboratory reports confirmed in this session.</p>
             )}
           </CardContent>
         )}
       </Card>
 
       {/* Module 02 */}
-      <Card className="border-slate-200 shadow-2xs">
+      <Card className="border-slate-200 dark:border-slate-800 shadow-2xs">
         <CardHeader
           onClick={() => toggleSection('mod02')}
-          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 transition-colors flex flex-row items-center justify-between"
+          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors flex flex-row items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-teal-50 text-teal-700">
+            <div className="p-2 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300">
               <Ruler className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-slate-900">
+                <span className="font-bold text-sm text-slate-900 dark:text-slate-100">
                   Module 02: Indian Diabetes Risk Score (IDRS)
                 </span>
-                <Badge variant={module02.has_data ? (module02.risk_category === 'high' ? 'high' : 'normal') : 'neutral'} size="sm">
-                  {module02.has_data ? `${module02.total_score} / 100` : 'No Data'}
+                <Badge variant={m2.has_data ? (m2.risk_category === 'high' ? 'high' : 'normal') : 'neutral'} size="sm">
+                  {m2.has_data ? `${m2.total_score} / 100` : 'No Data'}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">Validated 4-factor risk assessment by Mohan et al.</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">Validated 4-factor risk assessment by Mohan et al.</p>
             </div>
           </div>
           {openSections.mod02 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
         </CardHeader>
         {openSections.mod02 && (
-          <CardContent className="p-5 border-t border-slate-100 text-xs text-slate-700 space-y-2">
-            {module02.has_data ? (
+          <CardContent className="p-5 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-2">
+            {m2.has_data ? (
               <div className="space-y-1">
-                <p><strong>Total Score:</strong> {module02.total_score} / 100 ({module02.risk_category?.toUpperCase()} Risk)</p>
-                <p className="text-slate-500"><strong>Citation:</strong> {module02.citation}</p>
+                <p><strong>Total Score:</strong> {m2.total_score} / 100 ({m2.risk_category?.toUpperCase()} Risk)</p>
+                <p className="text-slate-500 dark:text-slate-400"><strong>Citation:</strong> {m2.citation || 'Mohan V et al. JAPI 2005'}</p>
               </div>
             ) : (
-              <p className="text-slate-400 italic">No IDRS calculation completed in this session.</p>
+              <p className="text-slate-400 dark:text-slate-500 italic">No IDRS calculation completed in this session.</p>
             )}
           </CardContent>
         )}
       </Card>
 
       {/* Module 03 */}
-      <Card className="border-slate-200 shadow-2xs">
+      <Card className="border-slate-200 dark:border-slate-800 shadow-2xs">
         <CardHeader
           onClick={() => toggleSection('mod03')}
-          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 transition-colors flex flex-row items-center justify-between"
+          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors flex flex-row items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-teal-50 text-teal-700">
+            <div className="p-2 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300">
               <Stethoscope className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-slate-900">
+                <span className="font-bold text-sm text-slate-900 dark:text-slate-100">
                   Module 03: Symptom Triage Guidance
                 </span>
-                <Badge variant={module03.has_data ? (module03.emergency_override_triggered ? 'emergency' : 'normal') : 'neutral'} size="sm">
-                  {module03.has_data ? module03.primary_acuity : 'No Data'}
+                <Badge variant={m3.has_data ? (m3.emergency_override_triggered ? 'emergency' : 'normal') : 'neutral'} size="sm">
+                  {m3.has_data ? m3.primary_acuity : 'No Data'}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">Deterministic rule engine with emergency red-flag priority</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">Deterministic rule engine with emergency red-flag priority</p>
             </div>
           </div>
           {openSections.mod03 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
         </CardHeader>
         {openSections.mod03 && (
-          <CardContent className="p-5 border-t border-slate-100 text-xs text-slate-700 space-y-2">
-            {module03.has_data ? (
+          <CardContent className="p-5 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-2">
+            {m3.has_data ? (
               <div className="space-y-1">
-                <p><strong>Acuity:</strong> {module03.primary_acuity}</p>
-                <p><strong>Recommended Action:</strong> {module03.action_required}</p>
-                {module03.safety_netting && (
-                  <p className="text-slate-500"><strong>Safety-Netting:</strong> {module03.safety_netting}</p>
+                <p><strong>Acuity:</strong> {m3.primary_acuity}</p>
+                <p><strong>Recommended Action:</strong> {m3.action_required}</p>
+                {m3.safety_netting && (
+                  <p className="text-slate-500 dark:text-slate-400"><strong>Safety-Netting:</strong> {m3.safety_netting}</p>
                 )}
               </div>
             ) : (
-              <p className="text-slate-400 italic">No symptom triage assessment completed in this session.</p>
+              <p className="text-slate-400 dark:text-slate-500 italic">No symptom triage assessment completed in this session.</p>
             )}
           </CardContent>
         )}
       </Card>
 
       {/* Module 04 */}
-      <Card className="border-slate-200 shadow-2xs">
+      <Card className="border-slate-200 dark:border-slate-800 shadow-2xs">
         <CardHeader
           onClick={() => toggleSection('mod04')}
-          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 transition-colors flex flex-row items-center justify-between"
+          className="py-3 px-5 cursor-pointer hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors flex flex-row items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-teal-50 text-teal-700">
+            <div className="p-2 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300">
               <Pill className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-slate-900">
+                <span className="font-bold text-sm text-slate-900 dark:text-slate-100">
                   Module 04: Medication Interaction Checker
                 </span>
-                <Badge variant={module04.has_data ? (module04.has_severe_warning ? 'emergency' : 'normal') : 'neutral'} size="sm">
-                  {module04.has_data ? `${module04.interaction_count} interaction(s)` : 'No Data'}
+                <Badge variant={m4.has_data ? (m4.has_severe_warning ? 'emergency' : 'normal') : 'neutral'} size="sm">
+                  {m4.has_data ? `${m4.interaction_count} interaction(s)` : 'No Data'}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">RxNorm brand normalization and evidence-based pairwise checks</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">RxNorm brand normalization and evidence-based pairwise checks</p>
             </div>
           </div>
           {openSections.mod04 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
         </CardHeader>
         {openSections.mod04 && (
-          <CardContent className="p-5 border-t border-slate-100 text-xs text-slate-700 space-y-2">
-            {module04.has_data ? (
+          <CardContent className="p-5 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-2">
+            {m4.has_data ? (
               <div className="space-y-1">
-                <p><strong>Medications Evaluated:</strong> {module04.total_medications}</p>
-                <p><strong>Interactions Found:</strong> {module04.interaction_count}</p>
-                {module04.mandatory_disclaimer && (
-                  <p className="text-slate-500 italic">{module04.mandatory_disclaimer}</p>
+                <p><strong>Medications Evaluated:</strong> {m4.total_medications}</p>
+                <p><strong>Interactions Found:</strong> {m4.interaction_count}</p>
+                {m4.mandatory_disclaimer && (
+                  <p className="text-slate-500 dark:text-slate-400 italic">{m4.mandatory_disclaimer}</p>
                 )}
               </div>
             ) : (
-              <p className="text-slate-400 italic">No medication interaction check performed in this session.</p>
+              <p className="text-slate-400 dark:text-slate-500 italic">No medication interaction check performed in this session.</p>
             )}
           </CardContent>
         )}

@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Alert';
 import { Pill, RotateCcw, ArrowRight, Zap } from 'lucide-react';
 import { apiClient } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 import { MedicationSearchAutocomplete } from '@/modules/medication-check/MedicationSearchAutocomplete';
 import { SelectedMedicationChips, SelectedMedication } from '@/modules/medication-check/SelectedMedicationChips';
 import { InteractionResultCard, InteractionItem } from '@/modules/medication-check/InteractionResultCard';
 import { SafetyDisclaimerCallout } from '@/modules/medication-check/SafetyDisclaimerCallout';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 interface MedicationCheckResponseData {
   check_id: string;
@@ -22,6 +24,7 @@ interface MedicationCheckResponseData {
 
 export const MedicationCheckerPage: React.FC = () => {
   const { i18n } = useTranslation();
+  const { user } = useAuth();
   const currentLang = i18n.language || 'en';
 
   const [selectedMeds, setSelectedMeds] = useState<SelectedMedication[]>([
@@ -74,6 +77,14 @@ export const MedicationCheckerPage: React.FC = () => {
         }
       );
       setResult(data);
+      try {
+        localStorage.setItem(
+          'vytal_assessment_meds',
+          JSON.stringify({ ...data, medications: selectedMeds, user_id: user?.id })
+        );
+      } catch {
+        // Ignore local storage error
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Failed to check medication interactions.');
     } finally {
@@ -200,51 +211,53 @@ export const MedicationCheckerPage: React.FC = () => {
 
       {/* Results View */}
       {result && (
-        <div className="space-y-6 pt-2">
-          {/* Summary Banner */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 rounded-xl bg-slate-50 border border-slate-200">
-            <div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Evaluation Findings
-              </span>
-              <h3 className="text-base font-bold text-slate-900">
-                {result.interaction_count === 0
-                  ? 'No Interactions Catalogued in Current Dataset'
-                  : `${result.interaction_count} Potential Interaction(s) Identified`}
-              </h3>
-            </div>
-            <Badge
-              variant={
-                result.has_severe_warning
-                  ? 'emergency'
+        <ErrorBoundary sectionName="MedWise Interaction Results">
+          <div className="space-y-6 pt-2">
+            {/* Summary Banner */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-800">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                  Evaluation Findings
+                </span>
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                  {result.interaction_count === 0
+                    ? 'No Interactions Catalogued in Current Dataset'
+                    : `${result.interaction_count} Potential Interaction(s) Identified`}
+                </h3>
+              </div>
+              <Badge
+                variant={
+                  result.has_severe_warning
+                    ? 'emergency'
+                    : result.interaction_count > 0
+                    ? 'warning'
+                    : 'normal'
+                }
+              >
+                {result.has_severe_warning
+                  ? 'Severe Warning'
                   : result.interaction_count > 0
-                  ? 'warning'
-                  : 'normal'
-              }
-            >
-              {result.has_severe_warning
-                ? 'Severe Warning'
-                : result.interaction_count > 0
-                ? 'Moderate Interaction'
-                : 'No Dataset Hits'}
-            </Badge>
-          </div>
-
-          {/* Interactions List */}
-          {result.interactions.length > 0 && (
-            <div className="space-y-4">
-              {result.interactions.map((interaction, idx) => (
-                <InteractionResultCard key={idx} interaction={interaction} />
-              ))}
+                  ? 'Moderate Interaction'
+                  : 'No Dataset Hits'}
+              </Badge>
             </div>
-          )}
 
-          {/* Mandatory Disclaimers */}
-          <SafetyDisclaimerCallout
-            mandatoryDisclaimer={result.mandatory_disclaimer}
-            hasInteractions={result.interactions.length > 0}
-          />
-        </div>
+            {/* Interactions List */}
+            {result.interactions.length > 0 && (
+              <div className="space-y-4">
+                {result.interactions.map((interaction, idx) => (
+                  <InteractionResultCard key={idx} interaction={interaction} />
+                ))}
+              </div>
+            )}
+
+            {/* Mandatory Disclaimers */}
+            <SafetyDisclaimerCallout
+              mandatoryDisclaimer={result.mandatory_disclaimer}
+              hasInteractions={result.interactions.length > 0}
+            />
+          </div>
+        </ErrorBoundary>
       )}
     </div>
   );

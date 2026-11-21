@@ -2,38 +2,48 @@ import React, { useState } from 'react';
 import { Download, Loader2, Calendar, FileText, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { downloadClientSummaryReport } from './clientPdfGenerator';
 
 interface ExecutiveBriefHeaderProps {
-  summaryId: string;
-  generatedAt: string;
-  highestAcuity: string;
-  pdfExportUrl: string;
+  summaryId?: string;
+  generatedAt?: string;
+  highestAcuity?: string;
+  pdfExportUrl?: string;
+  summaryData?: any;
 }
 
 export const ExecutiveBriefHeader: React.FC<ExecutiveBriefHeaderProps> = ({
-  summaryId,
-  generatedAt,
-  highestAcuity,
+  summaryId = 'BRIEF-SUMMARY',
+  generatedAt = new Date().toISOString(),
+  highestAcuity = 'ROUTINE',
   pdfExportUrl,
+  summaryData,
 }) => {
   const [downloading, setDownloading] = useState(false);
 
   const handleDownloadPdf = async () => {
     setDownloading(true);
     try {
-      const response = await fetch(pdfExportUrl);
-      if (!response.ok) throw new Error('Failed to download PDF summary');
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `VYTAL_Health_Summary_${summaryId.slice(0, 8)}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      if (pdfExportUrl && !pdfExportUrl.startsWith('data:')) {
+        const response = await fetch(pdfExportUrl);
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `VYTAL_Health_Summary_${(summaryId || 'BRIEF').slice(0, 8)}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          return;
+        }
+      }
+      // If backend PDF export is unavailable or running client-side:
+      downloadClientSummaryReport(summaryData || { summary_id: summaryId, generated_at: generatedAt, highest_acuity: highestAcuity });
     } catch (err) {
-      console.error('Error downloading summary PDF', err);
+      console.warn('Falling back to client-side document report', err);
+      downloadClientSummaryReport(summaryData || { summary_id: summaryId, generated_at: generatedAt, highest_acuity: highestAcuity });
     } finally {
       setDownloading(false);
     }
@@ -76,7 +86,7 @@ export const ExecutiveBriefHeader: React.FC<ExecutiveBriefHeaderProps> = ({
             </span>
             <span className="flex items-center gap-1.5 font-mono">
               <FileText className="w-3.5 h-3.5 text-teal-400" />
-              ID: {summaryId.slice(0, 8)}
+              ID: {(summaryId || 'BRIEF').slice(0, 8)}
             </span>
           </div>
         </div>

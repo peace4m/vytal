@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/Button';
 import { Alert } from '@/components/ui/Alert';
 import { Upload, FileText, Plus, RotateCcw } from 'lucide-react';
 import { apiClient } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 import { ExtractionReviewGrid, ReviewItem } from '@/modules/report-explainer/ExtractionReviewGrid';
 import { ManualEntryModal, ManualEntryItem } from '@/modules/report-explainer/ManualEntryModal';
 import { ConfirmedExplanationCard, ExplanationItem } from '@/modules/report-explainer/ConfirmedExplanationCard';
 
 export const ReportExplainerPage: React.FC = () => {
   const { i18n } = useTranslation();
+  const { user } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [reportId, setReportId] = useState<string | null>(null);
   const [extractedItems, setExtractedItems] = useState<ReviewItem[]>([]);
@@ -101,7 +103,16 @@ export const ReportExplainerPage: React.FC = () => {
         body: JSON.stringify(payload),
       });
 
-      setExplanations(res.explanations || []);
+      const explanationData = res.explanations || res.observations || [];
+      setExplanations(explanationData);
+      try {
+        localStorage.setItem(
+          'vytal_assessment_lab',
+          JSON.stringify({ report_id: reportId, observations: confirmed, explanations: explanationData, user_id: user?.id })
+        );
+      } catch {
+        // Ignore
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'Confirmation failed.');
     } finally {

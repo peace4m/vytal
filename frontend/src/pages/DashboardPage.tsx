@@ -16,9 +16,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Badge } from '@/components/ui/Badge';
 import { Alert } from '@/components/ui/Alert';
 import { getStoredSessionToken, purgeSession } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
+  const { userProfile } = useAuth();
   const [isPurging, setIsPurging] = useState(false);
   const [purgeSuccess, setPurgeSuccess] = useState(false);
 
@@ -96,8 +98,13 @@ export const DashboardPage: React.FC = () => {
       {/* Dashboard Top Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border border-teal-200/80 dark:border-teal-800/80">
+              Authenticated Patient Workspace
+            </span>
+          </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Decision-Support Workspace
+            {userProfile?.fullName ? `Welcome back, ${userProfile.fullName}` : 'Decision-Support Workspace'}
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Access the five healthcare modules in sequential order, or explore the independent ML research engine.

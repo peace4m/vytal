@@ -95,15 +95,15 @@ export const LandingPage: React.FC = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <Link to="/dashboard">
-            <Button size="lg" className="w-full sm:w-auto shadow-md">
+          <Link to="/signup">
+            <Button size="lg" className="w-full sm:w-auto shadow-md bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-semibold">
               <span>{t('actions.getStarted')}</span>
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </Link>
-          <Link to="/about">
+          <Link to="/login">
             <Button variant="outline" size="lg" className="w-full sm:w-auto">
-              <span>{t('actions.learnMore')}</span>
+              <span>Sign In</span>
             </Button>
           </Link>
         </div>

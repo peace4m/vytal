@@ -35,6 +35,22 @@
     "checkInteractions": "दवा परस्पर क्रिया जांचें",
     "reset": "रीसेट करें"
   },
+  "auth": {
+    "signIn": "साइन इन करें",
+    "signUp": "खाता बनाएं",
+    "signOut": "लॉग आउट",
+    "welcomeBack": "पुनः स्वागत है",
+    "createAccount": "नया खाता बनाएं",
+    "fullName": "पूरा नाम",
+    "email": "ईमेल पता",
+    "password": "पासवर्ड",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "rememberMe": "सत्र याद रखें",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "resetPassword": "पासवर्ड रीसेट करें",
+    "profileSettings": "प्रोफ़ाइल और सेटिंग्स",
+    "deleteAccount": "खाता हटाएं"
+  },
   "common": {
     "loading": "लोड हो रहा है...",
     "error": "एक त्रुटि हुई",
