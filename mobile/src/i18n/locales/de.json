@@ -1,0 +1,71 @@
+{
+  "brand": {
+    "name": "VYTAL",
+    "tagline": "Ihre Gesundheit, verständlich erklärt.",
+    "subtitle": "Eine erklärbare, mehrsprachige klinische Entscheidungsunterstützungsplattform, die deterministische Regeln und maschinelles Lernen vereint."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "modules": "Module",
+    "module1": "01. Laborbefund-Erklärer",
+    "module2": "02. IDRS-Risikoscore",
+    "module3": "03. Symptom-Triage",
+    "module4": "04. Medikamenten-Check",
+    "module5": "05. Gesundheitsübersicht",
+    "research": "ML-Forschung",
+    "about": "Über uns",
+    "safety": "Sicherheit",
+    "privacy": "Datenschutz"
+  },
+  "safety": {
+    "banner": "Bildungs- und Forschungsprototyp — KEIN MEDIZINPRODUKT. Dient niemals der Diagnose, Verschreibung oder dem Ersatz qualifizierter Ärzte.",
+    "emergencyCall": "Bei lebensbedrohlichen Notfällen wählen Sie bitte unverzüglich den Notruf 108, 112 oder Ihren örtlichen Rettungsdienst.",
+    "disclaimerTitle": "Sicherheitsgrenzen & Verwendungszweck"
+  },
+  "actions": {
+    "getStarted": "Jetzt starten",
+    "learnMore": "Mehr erfahren",
+    "clearData": "Daten löschen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "confirm": "Bestätigen & Fortfahren",
+    "downloadPdf": "PDF-Zusammenfassung herunterladen",
+    "calculate": "Risikoscore berechnen",
+    "evaluate": "Regeln auswerten",
+    "checkInteractions": "Wechselwirkungen prüfen",
+    "reset": "Formular zurücksetzen"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Ein Fehler ist aufgetreten",
+    "sessionActive": "Anonyme Sitzung aktiv",
+    "verifiedEvidence": "Geprüfte klinische Evidenz",
+    "educationalOnly": "Ausschließlich für Bildungszwecke"
+  },
+  "modules": {
+    "reportExplainer": {
+      "title": "Erklärer für medizinische Laborbefunde",
+      "description": "Laden Sie einen PDF-Laborbericht hoch oder erfassen Sie Messwerte manuell. Erklärt Ergebnisse in verständlicher Sprache mit Referenzbereichen."
+    },
+    "idrs": {
+      "title": "Indischer Diabetes-Risikoscore (IDRS)",
+      "description": "Berechnet das publizierte 4-Faktoren-Risikomodell von Mohan und Kollegen (JAPI 2005) für südasiatische Erwachsene."
+    },
+    "triage": {
+      "title": "Symptom-Triage & Notfall-Warnsignale",
+      "description": "Deterministische Regel-Engine mit strikter Priorität für Notfall-Alarmsignale. Nachrangige Befunde können rote Flaggen niemals überschreiben."
+    },
+    "medications": {
+      "title": "Medikamenten-Interaktionsprüfer",
+      "description": "RxNorm-Konzeptnormalisierung und evidenzbasierte Prüfung von Wechselwirkungen mit explizitem Negativbefund-Hinweis."
+    },
+    "summary": {
+      "title": "Konsolidierte Gesundheitsübersicht",
+      "description": "Führt verifizierte Ergebnisse aus Modul 01 bis 04 zusammen, einschließlich Querverbindungen und herunterladbarem PDF-Bericht."
+    },
+    "research": {
+      "title": "Machine-Learning-Forschungs-Dashboard",
+      "description": "Unabhängiges ML-Subsystem zum Benchmark von 4 Algorithmen mit geschichteter 5-facher Kreuzvalidierung auf einer Kohorte."
+    }
+  }
+}

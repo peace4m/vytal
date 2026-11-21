@@ -31,6 +31,7 @@ AsyncSessionLocal = async_sessionmaker(
 
 async def init_db() -> None:
     """Initialize database tables for development/testing."""
+    import backend.app.database.models  # Ensure all models are registered
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

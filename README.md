@@ -67,20 +67,46 @@ The system is validated by an automated dual test harness:
 ```bash
 # Backend Test Suite (Pytest + HTTPX + Asyncio)
 .venv\Scripts\python -m pytest backend/tests
-# Result: 71 passed, 0 failed in 1.53s
+# Result: 75 passed, 0 failed in 2.10s
 
-# Frontend Test Suite (Vitest + React Testing Library)
+# Cross-Platform Mobile & Web Typecheck (Expo + React Native)
+cd mobile && npx tsc --noEmit
+# Result: 0 errors
+
+# Web Frontend Test Suite (Vitest + React Testing Library)
 cd frontend && npm test
 # Result: 23 passed, 0 failed in 5.34s
-
-# Frontend Production Build & TypeScript Typecheck
-cd frontend && npm run build
-# Result: 1,700 modules transformed, 0 errors, built in 4.72s
 ```
 
 ---
 
-## 5. Getting Started & Local Setup
+## 5. Cross-Platform Universal Application (Android, iOS & Web)
+
+VYTAL features a single shared cross-platform codebase built with **Expo SDK 52, React Native, TypeScript, Expo Router v4, and React Native Web** in `/mobile`:
+
+- **Universal Navigation**: File-based Expo Router supporting mobile bottom tabs and desktop web responsiveness.
+- **Cross-Platform PDF Handling**: Native PDF document selection using `expo-document-picker` on Android (SAF) and iOS, and browser file input on web.
+- **Mobile Brief Sharing**: Native share sheet export via `expo-sharing` (WhatsApp, Email, Files) and instant web downloads.
+- **Supabase Authentication**: Complete email registration/verification, Google OAuth, Sign in with Apple, password recovery, profile synchronization, and secure hardware-backed keychain storage (`expo-secure-store`).
+- **Multilingual Support**: Real-time interface language switching (English, Hindi, Odia, etc.) with local & cloud persistence that strictly never alters medical calculations or clinical rules.
+
+To run the cross-platform application:
+```bash
+cd mobile
+
+# Web browser
+npm run web
+
+# Android (Emulator / Expo Go)
+npm run android
+
+# iOS (Simulator / Expo Go)
+npm run ios
+```
+
+---
+
+## 6. Getting Started & Local Setup
 
 ### Prerequisites
 - Python 3.12+ (or 3.14)

@@ -42,6 +42,12 @@ class Settings(BaseSettings):
     OPENFDA_API_BASE_URL: str = "https://api.fda.gov/drug"
     OPENFDA_API_KEY: Optional[str] = None
 
+    # Authentication (Supabase Auth)
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_ANON_KEY: Optional[str] = None
+    SUPABASE_JWT_SECRET: Optional[str] = None
+    SUPABASE_AUDIENCE: str = "authenticated"
+
     # ML Research Engine
     ML_RANDOM_SEED: int = 42
     ML_MODEL_REGISTRY_DIR: str = "./ml/models"
