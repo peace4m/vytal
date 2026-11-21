@@ -1,19 +1,19 @@
-
 name: Deploy Live Demo to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: ["main"]
+  workflow_dispatch: # Allows you to manually trigger a fresh run from the Actions tab
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Prevents canceling a deployment that is already running
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
@@ -21,37 +21,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install Frontend Dependencies
-        working-directory: frontend
-        run: npm ci
-
-      - name: Build Frontend
-        working-directory: frontend
-        run: npm run build
-
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
+      # ... keep your Node setup and build steps here ...
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
-          path: frontend/dist
+          path: ./dist # Ensure this matches your actual build output folder
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
