@@ -88,22 +88,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (isConfigured) {
+      // Check if URL returned with an OAuth error
+      const currentHash = window.location.hash;
+      if (currentHash.includes('error_description=')) {
+        try {
+          const params = new URLSearchParams(currentHash.replace(/^#/, ''));
+          const desc = params.get('error_description');
+          if (desc) setError(decodeURIComponent(desc.replace(/\+/g, ' ')));
+        } catch {
+          // ignore parsing error
+        }
+      }
+
       // 1. Live Supabase Session Check
       supabase.auth.getSession().then(({ data: { session: curSession } }) => {
         setSession(curSession);
         setUser(curSession?.user ?? null);
         syncProfileFromUser(curSession?.user ?? null);
         setIsLoading(false);
+        if (curSession && window.location.hash.includes('access_token=')) {
+          window.location.hash = '#/dashboard';
+        }
       });
 
       // 2. Auth State Listener
       const {
         data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      } = supabase.auth.onAuthStateChange((event, newSession) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
         syncProfileFromUser(newSession?.user ?? null);
         setIsLoading(false);
+
+        if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && newSession) {
+          if (
+            window.location.hash.includes('access_token=') ||
+            window.location.hash === '#/login' ||
+            window.location.hash === '#/signup'
+          ) {
+            window.location.hash = '#/dashboard';
+          }
+        }
       });
 
       return () => {
@@ -222,11 +247,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithGoogle = async () => {
     clearError();
     const redirectUrl = `${window.location.origin}${window.location.pathname}`;
-    const redirectTo = redirectUrl.endsWith('/') ? `${redirectUrl}#/dashboard` : `${redirectUrl}/#/dashboard`;
+    const cleanRedirectUrl = redirectUrl.endsWith('/') ? redirectUrl : `${redirectUrl}/`;
     const { error: authErr } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo,
+        redirectTo: cleanRedirectUrl,
       },
     });
     if (authErr) {
@@ -240,11 +265,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithApple = async () => {
     clearError();
     const redirectUrl = `${window.location.origin}${window.location.pathname}`;
-    const redirectTo = redirectUrl.endsWith('/') ? `${redirectUrl}#/dashboard` : `${redirectUrl}/#/dashboard`;
+    const cleanRedirectUrl = redirectUrl.endsWith('/') ? redirectUrl : `${redirectUrl}/`;
     const { error: authErr } = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo,
+        redirectTo: cleanRedirectUrl,
       },
     });
     if (authErr) {
