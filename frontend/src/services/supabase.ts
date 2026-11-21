@@ -62,26 +62,7 @@ export interface StoredLocalUser {
 function getLocalUsers(): StoredLocalUser[] {
   try {
     const raw = localStorage.getItem(LOCAL_USERS_KEY);
-    const users: StoredLocalUser[] = raw ? JSON.parse(raw) : [];
-
-    // Ensure built-in demo clinician account always exists for instant evaluation
-    const demoEmail = 'demo@vytal.health';
-    if (!users.some((u) => u.email.toLowerCase() === demoEmail)) {
-      const demoUser: StoredLocalUser = {
-        id: 'usr_demo_clinician',
-        email: demoEmail,
-        fullName: 'Dr. Rajesh Sharma',
-        passwordHash: btoa('Password@123'),
-        preferredLanguage: 'en',
-        preferredTheme: 'system',
-        emailConfirmed: true,
-        createdAt: '2026-01-01T00:00:00.000Z',
-      };
-      users.push(demoUser);
-      saveLocalUsers(users);
-    }
-
-    return users;
+    return raw ? JSON.parse(raw) : [];
   } catch {
     return [];
   }
@@ -118,6 +99,11 @@ export const localAuthService = {
       const raw = localStorage.getItem(LOCAL_SESSION_KEY);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
+      // Clear legacy temporary demo session so every visitor starts with their own fresh account
+      if (parsed.user?.id === 'usr_demo_clinician') {
+        localStorage.removeItem(LOCAL_SESSION_KEY);
+        return null;
+      }
       // Validate expiration
       if (parsed.expires_at && parsed.expires_at * 1000 < Date.now()) {
         localStorage.removeItem(LOCAL_SESSION_KEY);

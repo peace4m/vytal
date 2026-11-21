@@ -19,7 +19,6 @@ import {
   ShieldCheck,
   Check,
   RefreshCw,
-  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
@@ -31,7 +30,6 @@ export const SignUpPage: React.FC = () => {
   const {
     isAuthenticated,
     signUpWithEmail,
-    signInWithEmail,
     signInWithGoogle,
     signInWithApple,
     resendVerificationEmail,
@@ -225,38 +223,29 @@ export const SignUpPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Live Demo Quick Action */}
-        <div className="p-3.5 rounded-xl bg-teal-50/90 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <div>
-            <div className="font-semibold flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-              <span>Instant Demo Access</span>
-            </div>
-            <p className="text-[11px] text-teal-700/80 dark:text-teal-400/80 mt-0.5">
-              Skip manual registration & evaluate all modules directly.
-            </p>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={async () => {
-              await signInWithEmail('demo@vytal.health', 'Password@123');
-              navigate('/dashboard', { replace: true });
-            }}
-            className="text-xs shrink-0 self-start sm:self-auto font-bold border-teal-300 dark:border-teal-700 hover:bg-teal-100/60 dark:hover:bg-teal-900/40"
-          >
-            ⚡ 1-Click Demo Login
-          </Button>
-        </div>
-
-        {/* Error Alert */}
+        {/* Error Alert / Notice */}
         {displayError && (
-          <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/80 text-rose-800 dark:text-rose-300 text-xs flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
-            <div className="flex-1 leading-relaxed">
-              <span>{displayError}</span>
+          <div className={`p-3.5 rounded-xl border text-xs flex items-start justify-between gap-2.5 ${
+            displayError.includes('OAuth')
+              ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/80 text-amber-900 dark:text-amber-200'
+              : 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/80 text-rose-800 dark:text-rose-300'
+          }`}>
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className={`w-4 h-4 shrink-0 mt-0.5 ${
+                displayError.includes('OAuth') ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400'
+              }`} />
+              <span className="leading-relaxed">{displayError}</span>
             </div>
+            <button
+              type="button"
+              onClick={() => {
+                setLocalError(null);
+                clearError();
+              }}
+              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold px-1"
+            >
+              ✕
+            </button>
           </div>
         )}
 
@@ -276,7 +265,7 @@ export const SignUpPage: React.FC = () => {
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Dr. Rajesh Sharma"
+                placeholder="Your full name"
                 className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
               />
             </div>
@@ -296,7 +285,7 @@ export const SignUpPage: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="rajesh@example.com"
+                placeholder="name@example.com"
                 className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
               />
             </div>

@@ -56,8 +56,8 @@ describe('Authentication Pages & Route Protection', () => {
     renderWithProviders(<SignUpPage />, { route: '/signup' });
 
     expect(screen.getByText('Create your account')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Dr. Rajesh Sharma')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('rajesh@example.com')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Your full name')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('name@example.com')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Min 8 chars, 1 uppercase, 1 symbol')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Re-enter password')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument();
@@ -66,8 +66,8 @@ describe('Authentication Pages & Route Protection', () => {
   it('validates password match and terms consent on SignUpPage', async () => {
     renderWithProviders(<SignUpPage />, { route: '/signup' });
 
-    fireEvent.change(screen.getByPlaceholderText('Dr. Rajesh Sharma'), { target: { value: 'Dr. John Doe' } });
-    fireEvent.change(screen.getByPlaceholderText('rajesh@example.com'), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText('Your full name'), { target: { value: 'Dr. John Doe' } });
+    fireEvent.change(screen.getByPlaceholderText('name@example.com'), { target: { value: 'john@example.com' } });
     fireEvent.change(screen.getByPlaceholderText('Min 8 chars, 1 uppercase, 1 symbol'), {
       target: { value: 'StrongP@ss123' },
     });
