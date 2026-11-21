@@ -7,11 +7,11 @@
   "nav": {
     "dashboard": "Dashboard",
     "modules": "Modules",
-    "module1": "01. Report Explainer",
-    "module2": "02. IDRS Risk Score",
-    "module3": "03. Symptom Triage",
-    "module4": "04. Medication Check",
-    "module5": "05. Health Summary",
+    "module1": "01. LabLens",
+    "module2": "02. RiskPulse",
+    "module3": "03. SymptomSense",
+    "module4": "04. MedWise",
+    "module5": "05. Vytal360",
     "research": "ML Research",
     "about": "About",
     "safety": "Safety",
@@ -44,27 +44,39 @@
   },
   "modules": {
     "reportExplainer": {
-      "title": "Medical Laboratory Report Explainer",
+      "title": "LabLens",
+      "subtitle": "Understand your reports.",
+      "purpose": "Laboratory report interpretation.",
       "description": "Upload a PDF laboratory report or enter values manually. Explains test results in simple language with laboratory reference ranges."
     },
     "idrs": {
-      "title": "Indian Diabetes Risk Score (IDRS)",
+      "title": "RiskPulse",
+      "subtitle": "Know your health risk factors.",
+      "purpose": "Indian Diabetes Risk Score (IDRS).",
       "description": "Calculates the published 4-factor risk score by Mohan and colleagues (JAPI 2005) for South Asian adults."
     },
     "triage": {
-      "title": "Symptom Triage & Red-Flag Protocols",
+      "title": "SymptomSense",
+      "subtitle": "Understand symptoms and warning signs.",
+      "purpose": "Explainable, rule-based symptom triage.",
       "description": "Deterministic rule engine evaluated with emergency red flags first. Cannot be overridden by lower-priority findings."
     },
     "medications": {
-      "title": "Medication Interaction Checker",
+      "title": "MedWise",
+      "subtitle": "Explore medication interactions.",
+      "purpose": "Evidence-based medication interaction information.",
       "description": "RxNorm concept normalization and evidence-backed pairwise interaction reviews with negative finding disclaimers."
     },
     "summary": {
-      "title": "Consolidated Health Summary & Brief",
-      "description": "Integrates verified findings across Modules 01 through 04 with cross-module observations and downloadable PDF brief."
+      "title": "Vytal360",
+      "subtitle": "Your complete health overview.",
+      "purpose": "Integrated health summary.",
+      "description": "Consolidated health brief synthesizing findings across all healthcare modules with downloadable vector PDF."
     },
     "research": {
       "title": "Machine Learning Research & Analytics Dashboard",
+      "subtitle": "Algorithmic Benchmarks & Explainability",
+      "purpose": "Empirical ML research segregation.",
       "description": "Independent ML subsystem benchmarking 4 algorithms with Stratified 5-Fold Cross-Validation on a South Asian cohort."
     }
   }

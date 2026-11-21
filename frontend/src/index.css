@@ -11,10 +11,74 @@
     --color-background: #f8fafc;
   }
 
+  :root.dark, .dark {
+    --color-primary: #14b8a6;
+    --color-primary-hover: #2dd4bf;
+    --color-secondary: #10b981;
+    --color-navy: #f8fafc;
+    --color-navy-muted: #94a3b8;
+    --color-surface: #0f172a;
+    --color-background: #020617;
+    color-scheme: dark;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-navy);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .dark body {
+    background-color: #020617;
+    color: #f8fafc;
+  }
+
+  /* Dark mode component helper overrides */
+  .dark .bg-white {
+    background-color: #0f172a;
+  }
+  .dark .bg-slate-50 {
+    background-color: #1e293b;
+  }
+  .dark .bg-slate-100 {
+    background-color: #334155;
+  }
+  .dark .border-slate-200, .dark .border-slate-100 {
+    border-color: #334155;
+  }
+  .dark .text-slate-900 {
+    color: #f8fafc;
+  }
+  .dark .text-slate-800 {
+    color: #f1f5f9;
+  }
+  .dark .text-slate-700 {
+    color: #e2e8f0;
+  }
+  .dark .text-slate-600 {
+    color: #cbd5e1;
+  }
+  .dark .text-slate-500 {
+    color: #94a3b8;
+  }
+  .dark .bg-teal-50 {
+    background-color: rgba(13, 148, 136, 0.15);
+  }
+  .dark .bg-emerald-50 {
+    background-color: rgba(16, 185, 129, 0.15);
+  }
+  .dark .bg-rose-50 {
+    background-color: rgba(225, 29, 72, 0.15);
+  }
+  .dark .bg-amber-50 {
+    background-color: rgba(245, 158, 11, 0.15);
+  }
+  .dark .text-teal-950, .dark .text-teal-900 {
+    color: #2dd4bf;
+  }
+  .dark .text-emerald-950, .dark .text-emerald-900 {
+    color: #34d399;
   }
 
   /* Devanagari (Hindi) specific script enhancement */

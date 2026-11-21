@@ -22,11 +22,13 @@ import { Button } from '../../src/components/ui/Button';
 import { Alert } from '../../src/components/ui/Alert';
 import { LanguageSelectorModal } from '../../src/components/ui/LanguageSelectorModal';
 import { colors } from '../../src/theme/colors';
+import { useAppTheme } from '../../src/context/ThemeContext';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const { user, userProfile, isAuthenticated, signOut, deleteAccount } = useAuth();
+  const { theme, setTheme } = useAppTheme();
   const [langModalOpen, setLangModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -112,6 +114,28 @@ export default function ProfileScreen() {
               variant="outline"
               size="sm"
             />
+          </View>
+        </Card>
+
+        {/* Theme & Appearance Section */}
+        <Card title="Theme & Appearance" subtitle="Switch between Light, Dark, or System mode">
+          <View style={styles.themeSelectorRow}>
+            {(
+              [
+                { id: 'light', label: '☀️ Light' },
+                { id: 'dark', label: '🌙 Dark' },
+                { id: 'system', label: '📱 System' },
+              ] as const
+            ).map((item) => (
+              <Button
+                key={item.id}
+                title={item.label}
+                variant={theme === item.id ? 'primary' : 'outline'}
+                size="sm"
+                onPress={() => setTheme(item.id)}
+                style={{ flex: 1, marginHorizontal: 3 }}
+              />
+            ))}
           </View>
         </Card>
 
@@ -221,6 +245,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 4,
+  },
+  themeSelectorRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
   },
   prefLabel: {
     fontSize: 13,

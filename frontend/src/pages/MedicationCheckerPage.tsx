@@ -93,10 +93,13 @@ export const MedicationCheckerPage: React.FC = () => {
             <Badge variant="normal">RxNorm Normalization & Evidence Checks</Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
-            Medication Interaction Checker
+            04 — MedWise
           </h1>
+          <p className="text-xs font-semibold text-teal-700 mt-0.5">
+            Explore medication interactions.
+          </p>
           <p className="text-sm text-slate-500 mt-1 max-w-2xl">
-            Evidence-backed pairwise drug interaction reviews with brand normalization, clinical
+            Purpose: Evidence-based medication interaction information. Evidence-backed pairwise drug interaction reviews with brand normalization, clinical
             mechanism descriptions, and mandatory safety notices.
           </p>
         </div>

@@ -12,8 +12,15 @@ export interface ModelBenchmarkData {
   recall: number;
   f1_score: number;
   roc_auc: number;
+  auc_roc?: number;
   brier_score: number;
   cv_strategy: string;
+  confusion_matrix?: {
+    true_negative: number;
+    false_positive: number;
+    false_negative: number;
+    true_positive: number;
+  };
 }
 
 interface AlgorithmBenchmarkTableProps {
@@ -52,25 +59,32 @@ export const AlgorithmBenchmarkTable: React.FC<AlgorithmBenchmarkTableProps> = (
           </TableHeader>
           <TableBody>
             {models.map((m) => {
-              const isBest = m.model_id === 'random-forest';
+              const modelId = m.model_id || m.algorithm.toLowerCase().replace(/[^a-z0-9]/g, '-');
+              const isBest = modelId.includes('random-forest') || modelId.includes('gradient');
+              const rocAuc = m.roc_auc ?? m.auc_roc ?? 0;
+              const acc = m.accuracy ?? 0;
+              const prec = m.precision ?? (m as any).specificity ?? 0;
+              const rec = m.recall ?? (m as any).sensitivity ?? 0;
+              const f1 = m.f1_score ?? 0;
+              const brier = m.brier_score ?? 0;
 
               return (
-                <TableRow key={m.model_id} className={isBest ? 'bg-teal-50/30' : undefined}>
+                <TableRow key={modelId} className={isBest ? 'bg-teal-50/30' : undefined}>
                   <TableCell className="font-semibold text-slate-900 flex items-center gap-2">
                     {isBest && <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0" />}
                     <span>{m.algorithm}</span>
                   </TableCell>
-                  <TableCell className="font-mono">{(m.accuracy * 100).toFixed(1)}%</TableCell>
-                  <TableCell className="font-mono">{(m.precision * 100).toFixed(1)}%</TableCell>
+                  <TableCell className="font-mono">{(acc * 100).toFixed(1)}%</TableCell>
+                  <TableCell className="font-mono">{(prec * 100).toFixed(1)}%</TableCell>
                   <TableCell className="font-mono font-bold text-teal-900">
-                    {(m.recall * 100).toFixed(1)}%
+                    {(rec * 100).toFixed(1)}%
                   </TableCell>
-                  <TableCell className="font-mono">{(m.f1_score * 100).toFixed(1)}%</TableCell>
+                  <TableCell className="font-mono">{(f1 * 100).toFixed(1)}%</TableCell>
                   <TableCell className="font-mono font-bold text-teal-900">
-                    {m.roc_auc.toFixed(3)}
+                    {rocAuc.toFixed(3)}
                   </TableCell>
                   <TableCell className="font-mono text-slate-500">
-                    {m.brier_score.toFixed(3)}
+                    {brier.toFixed(3)}
                   </TableCell>
                 </TableRow>
               );

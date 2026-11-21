@@ -128,7 +128,7 @@ def generate_health_summary_pdf(
     # 1. Header & Branding Banner
     header_data = [
         [
-            Paragraph("<b>VYTAL</b> — Your Health, Decoded.", title_style),
+            Paragraph("<b>VYTAL</b> • Vytal360 Clinical Brief", title_style),
             Paragraph(
                 f"<b>Document ID:</b> {summary_data.summary_id[:8]}<br/>"
                 f"<b>Generated:</b> {summary_data.generated_at.strftime('%Y-%m-%d %H:%M UTC')}<br/>"
@@ -210,7 +210,7 @@ def generate_health_summary_pdf(
     story.append(Spacer(1, 6))
 
     # 4. Section: Module 01 Confirmed Lab Observations
-    story.append(Paragraph("Module 01: Confirmed Laboratory Observations", section_heading))
+    story.append(Paragraph("01 — LabLens: Laboratory Report Interpretation", section_heading))
     if summary_data.module_01_report.has_data and summary_data.module_01_report.observations:
         table_rows = [
             [
@@ -250,7 +250,7 @@ def generate_health_summary_pdf(
     story.append(Spacer(1, 6))
 
     # 5. Section: Module 02 IDRS Risk Score
-    story.append(Paragraph("Module 02: Indian Diabetes Risk Score (IDRS)", section_heading))
+    story.append(Paragraph("02 — RiskPulse: Indian Diabetes Risk Score (IDRS)", section_heading))
     if summary_data.module_02_idrs.has_data and summary_data.module_02_idrs.total_score is not None:
         idrs = summary_data.module_02_idrs
         idrs_rows = [
@@ -285,7 +285,7 @@ def generate_health_summary_pdf(
     story.append(Spacer(1, 6))
 
     # 6. Section: Module 03 Symptom Triage
-    story.append(Paragraph("Module 03: Symptom Triage Protocols", section_heading))
+    story.append(Paragraph("03 — SymptomSense: Rule-Based Symptom Triage", section_heading))
     if summary_data.module_03_triage.has_data:
         tri = summary_data.module_03_triage
         triage_rows = [
@@ -319,7 +319,7 @@ def generate_health_summary_pdf(
     story.append(Spacer(1, 6))
 
     # 7. Section: Module 04 Medication Interaction Review
-    story.append(Paragraph("Module 04: Medication Interaction Review", section_heading))
+    story.append(Paragraph("04 — MedWise: Evidence-Based Medication Review", section_heading))
     if summary_data.module_04_medications.has_data:
         med = summary_data.module_04_medications
         med_rows = [

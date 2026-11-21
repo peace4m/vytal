@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Activity, Languages, Sparkles } from 'lucide-react';
+import { Languages, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 export const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -30,15 +31,18 @@ export const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo & Tagline */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
-              <Activity className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-slate-800 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform overflow-hidden p-1.5 border border-slate-200 dark:border-slate-700">
+              <img src="/branding/vytal-symbol.svg" alt="VYTAL Logo Mark" className="w-full h-full object-contain" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold tracking-tight text-slate-900">VYTAL</span>
-                <Badge variant="info" size="sm" className="hidden sm:inline-flex">v0.1 Prototype</Badge>
+                <span className="text-xl font-black tracking-tight text-slate-900 dark:text-slate-100 font-sans">
+                  VYTAL
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                <Badge variant="info" size="sm" className="hidden sm:inline-flex">Decision Support</Badge>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
                 {t('brand.tagline')}
               </p>
             </div>
@@ -64,8 +68,10 @@ export const Header: React.FC = () => {
             })}
           </nav>
 
-          {/* Controls: Language Selector & Status */}
-          <div className="flex items-center gap-3">
+          {/* Controls: Language Selector & Theme Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
+
             <div className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-700">
               <Languages className="w-4 h-4 text-slate-400" />
               <select

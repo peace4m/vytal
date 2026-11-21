@@ -4,9 +4,11 @@ import { Badge } from '@/components/ui/Badge';
 import { BarChart3, Info } from 'lucide-react';
 
 export interface FeatureRankingItem {
-  feature: string;
-  raw_importance: number;
-  relative_percentage: number;
+  feature?: string;
+  feature_name?: string;
+  raw_importance?: number;
+  importance_score?: number;
+  relative_percentage?: number;
 }
 
 interface FeatureImportanceVisualizerProps {
@@ -16,8 +18,10 @@ interface FeatureImportanceVisualizerProps {
 export const FeatureImportanceVisualizer: React.FC<FeatureImportanceVisualizerProps> = ({
   rankings,
 }) => {
-  const top10 = rankings.slice(0, 10);
-  const maxPct = top10.length > 0 ? top10[0].relative_percentage : 1;
+  const top10 = (rankings || []).slice(0, 10);
+  const maxPct = top10.length > 0 
+    ? (top10[0].relative_percentage ?? (top10[0].importance_score ? top10[0].importance_score * 100 : 1)) 
+    : 1;
 
   return (
     <Card className="border-slate-200 shadow-xs">
@@ -39,20 +43,23 @@ export const FeatureImportanceVisualizer: React.FC<FeatureImportanceVisualizerPr
       <CardContent className="p-5 space-y-3.5">
         <div className="space-y-2.5">
           {top10.map((item, idx) => {
-            const barWidth = `${Math.min(100, Math.round((item.relative_percentage / maxPct) * 100))}%`;
+            const featureName = item.feature || item.feature_name || `Feature ${idx + 1}`;
+            const relPct = item.relative_percentage ?? (item.importance_score ? item.importance_score * 100 : 0);
+            const rawScore = item.raw_importance ?? item.importance_score ?? 0;
+            const barWidth = `${Math.min(100, Math.max(2, Math.round((relPct / (maxPct || 1)) * 100)))}%`;
             const isTopTier = idx < 2;
 
             return (
-              <div key={item.feature} className="space-y-1 text-xs">
+              <div key={featureName} className="space-y-1 text-xs">
                 <div className="flex items-center justify-between font-medium text-slate-700">
                   <span className="flex items-center gap-1.5">
                     <span className="font-mono text-slate-400 text-[10px]">#{idx + 1}</span>
                     <strong className={isTopTier ? 'text-teal-950 font-bold' : 'text-slate-800'}>
-                      {item.feature}
+                      {featureName}
                     </strong>
                   </span>
                   <span className="font-mono text-slate-500">
-                    {item.relative_percentage.toFixed(1)}% (score: {item.raw_importance.toFixed(3)})
+                    {relPct.toFixed(1)}% (score: {rawScore.toFixed(3)})
                   </span>
                 </div>
 

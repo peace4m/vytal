@@ -59,10 +59,13 @@ export const IDRSPage: React.FC = () => {
             <Badge variant="normal">CURES 2005 Methodology</Badge>
           </div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
-            Indian Diabetes Risk Score (IDRS)
+            02 — RiskPulse
           </h1>
+          <p className="text-xs font-semibold text-teal-700 mt-0.5">
+            Know your health risk factors.
+          </p>
           <p className="text-xs text-slate-500 mt-0.5">
-            Transparent, validated screening calculator by Dr. V. Mohan et al. (JAPI 2005; 53:759–763).
+            Purpose: Indian Diabetes Risk Score (IDRS). Transparent, validated screening calculator by Dr. V. Mohan et al. (JAPI 2005; 53:759–763).
           </p>
         </div>
       </div>

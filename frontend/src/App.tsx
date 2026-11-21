@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { AppLayout } from '@/components/layout/AppLayout';
 
 import { LandingPage } from '@/pages/LandingPage';
@@ -27,25 +28,27 @@ const queryClient = new QueryClient({
 export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <AppLayout>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            {/* The 5 Mandatory Modules in Strict Sequence */}
-            <Route path="/modules/report-explainer" element={<ReportExplainerPage />} />
-            <Route path="/modules/risk-score" element={<IDRSPage />} />
-            <Route path="/modules/symptom-triage" element={<SymptomTriagePage />} />
-            <Route path="/modules/medication-check" element={<MedicationCheckerPage />} />
-            <Route path="/modules/health-summary" element={<HealthSummaryPage />} />
-            {/* Research & Meta Pages */}
-            <Route path="/research-dashboard" element={<ResearchDashboardPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/safety" element={<SafetyPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-          </Routes>
-        </AppLayout>
-      </HashRouter>
+      <ThemeProvider>
+        <HashRouter>
+          <AppLayout>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              {/* The 5 Mandatory Modules in Strict Sequence */}
+              <Route path="/modules/report-explainer" element={<ReportExplainerPage />} />
+              <Route path="/modules/risk-score" element={<IDRSPage />} />
+              <Route path="/modules/symptom-triage" element={<SymptomTriagePage />} />
+              <Route path="/modules/medication-check" element={<MedicationCheckerPage />} />
+              <Route path="/modules/health-summary" element={<HealthSummaryPage />} />
+              {/* Research & Meta Pages */}
+              <Route path="/research-dashboard" element={<ResearchDashboardPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/safety" element={<SafetyPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+            </Routes>
+          </AppLayout>
+        </HashRouter>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

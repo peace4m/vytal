@@ -41,7 +41,9 @@ export const DashboardPage: React.FC = () => {
   const moduleItems = [
     {
       num: '01',
-      title: 'Report Explainer',
+      title: 'LabLens',
+      subtitle: 'Understand your reports.',
+      purpose: 'Laboratory report interpretation.',
       route: '/modules/report-explainer',
       status: 'Ready',
       desc: 'Extract lab test values and printed reference ranges from PDF or manual intake.',
@@ -49,7 +51,9 @@ export const DashboardPage: React.FC = () => {
     },
     {
       num: '02',
-      title: 'Indian Diabetes Risk Score',
+      title: 'RiskPulse',
+      subtitle: 'Know your health risk factors.',
+      purpose: 'Indian Diabetes Risk Score (IDRS).',
       route: '/modules/risk-score',
       status: 'Ready',
       desc: 'Compute validated 4-parameter IDRS based on Mohan et al. (JAPI 2005).',
@@ -57,7 +61,9 @@ export const DashboardPage: React.FC = () => {
     },
     {
       num: '03',
-      title: 'Symptom Triage',
+      title: 'SymptomSense',
+      subtitle: 'Understand symptoms and warning signs.',
+      purpose: 'Explainable, rule-based symptom triage.',
       route: '/modules/symptom-triage',
       status: 'Ready',
       desc: 'Deterministic symptom questionnaire with prioritized emergency red-flag screening.',
@@ -65,7 +71,9 @@ export const DashboardPage: React.FC = () => {
     },
     {
       num: '04',
-      title: 'Medication Interaction Checker',
+      title: 'MedWise',
+      subtitle: 'Explore medication interactions.',
+      purpose: 'Evidence-based medication interaction information.',
       route: '/modules/medication-check',
       status: 'Ready',
       desc: 'Pairwise medication interaction check with RxNorm normalization & negative disclaimers.',
@@ -73,7 +81,9 @@ export const DashboardPage: React.FC = () => {
     },
     {
       num: '05',
-      title: 'Health Summary',
+      title: 'Vytal360',
+      subtitle: 'Your complete health overview.',
+      purpose: 'Integrated health summary.',
       route: '/modules/health-summary',
       status: 'Ready',
       desc: 'Consolidated clinical synthesis and downloadable timestamped PDF brief.',
@@ -141,16 +151,24 @@ export const DashboardPage: React.FC = () => {
                   <div className="p-2 bg-slate-50 rounded-lg border border-slate-100">
                     {m.icon}
                   </div>
-                  <CardTitle className="text-base">{m.title}</CardTitle>
+                  <div>
+                    <CardTitle className="text-base">{m.num} — {m.title}</CardTitle>
+                    <p className="text-xs text-teal-700 font-medium">{m.subtitle}</p>
+                  </div>
                 </div>
-                <CardDescription className="text-xs mt-2 leading-relaxed">
-                  {m.desc}
-                </CardDescription>
+                <div className="mt-2 space-y-1">
+                  <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
+                    Purpose: {m.purpose}
+                  </span>
+                  <CardDescription className="text-xs leading-relaxed">
+                    {m.desc}
+                  </CardDescription>
+                </div>
               </CardHeader>
               <CardContent className="pt-2">
                 <Link to={m.route}>
                   <Button variant="outline" size="sm" fullWidth className="group justify-between">
-                    <span>Open Module {m.num}</span>
+                    <span>Launch {m.title}</span>
                     <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-teal-600 group-hover:translate-x-0.5 transition-all" />
                   </Button>
                 </Link>

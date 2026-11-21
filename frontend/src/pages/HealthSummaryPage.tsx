@@ -63,10 +63,13 @@ export const HealthSummaryPage: React.FC = () => {
             <Badge variant="normal">Multi-Module Clinical Synthesis</Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
-            Health Summary & Clinical Brief
+            05 — Vytal360
           </h1>
+          <p className="text-xs font-semibold text-teal-700 mt-0.5">
+            Your complete health overview.
+          </p>
           <p className="text-sm text-slate-500 mt-1 max-w-2xl">
-            Synthesizes confirmed laboratory observations, IDRS diabetes risk, symptom triage protocols,
+            Purpose: Integrated health summary. Synthesizes confirmed laboratory observations, IDRS diabetes risk, symptom triage protocols,
             and medication interactions into a prioritized decision-support brief.
           </p>
         </div>

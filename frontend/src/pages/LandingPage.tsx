@@ -22,7 +22,9 @@ export const LandingPage: React.FC = () => {
   const modules = [
     {
       num: '01',
-      title: 'Report Explainer',
+      title: 'LabLens',
+      subtitle: 'Understand your reports.',
+      purpose: 'Laboratory report interpretation.',
       desc: 'Understand laboratory reports in plain language. Extracts test values, units, and laboratory-printed reference ranges with mandatory user confirmation.',
       icon: <FileText className="w-5 h-5 text-teal-600" />,
       link: '/modules/report-explainer',
@@ -30,7 +32,9 @@ export const LandingPage: React.FC = () => {
     },
     {
       num: '02',
-      title: 'Indian Diabetes Risk Score',
+      title: 'RiskPulse',
+      subtitle: 'Know your health risk factors.',
+      purpose: 'Indian Diabetes Risk Score (IDRS).',
       desc: 'Transparent implementation of the published 4-parameter scoring tool by Dr. V. Mohan et al. (JAPI 2005) with exact sensitivity/specificity disclosures.',
       icon: <Activity className="w-5 h-5 text-teal-600" />,
       link: '/modules/risk-score',
@@ -38,7 +42,9 @@ export const LandingPage: React.FC = () => {
     },
     {
       num: '03',
-      title: 'Symptom Triage',
+      title: 'SymptomSense',
+      subtitle: 'Understand symptoms and warning signs.',
+      purpose: 'Explainable, rule-based symptom triage.',
       desc: 'Deterministic clinical triage where life-threatening emergency red flags evaluate first and strictly override lower-priority recommendations.',
       icon: <AlertTriangle className="w-5 h-5 text-rose-600" />,
       link: '/modules/symptom-triage',
@@ -46,7 +52,9 @@ export const LandingPage: React.FC = () => {
     },
     {
       num: '04',
-      title: 'Medication Interaction Checker',
+      title: 'MedWise',
+      subtitle: 'Explore medication interactions.',
+      purpose: 'Evidence-based medication interaction information.',
       desc: 'Evidence-backed pairwise drug interaction checks using RxNorm normalization, ONC high-priority lists, and mandatory coverage limitation disclaimers.',
       icon: <Pill className="w-5 h-5 text-teal-600" />,
       link: '/modules/medication-check',
@@ -54,7 +62,9 @@ export const LandingPage: React.FC = () => {
     },
     {
       num: '05',
-      title: 'Health Summary',
+      title: 'Vytal360',
+      subtitle: 'Your complete health overview.',
+      purpose: 'Integrated health summary.',
       desc: 'Consolidates verified findings from all modules into a prioritized, downloadable clinical brief with timestamped source citations.',
       icon: <ClipboardCheck className="w-5 h-5 text-emerald-600" />,
       link: '/modules/health-summary',
@@ -66,6 +76,11 @@ export const LandingPage: React.FC = () => {
     <div className="space-y-16 py-4">
       {/* Hero Section */}
       <section className="text-center max-w-4xl mx-auto space-y-6 pt-6 sm:pt-10">
+        <div className="flex justify-center mb-2">
+          <img src="/branding/vytal-logo-primary.svg" alt="VYTAL" className="h-14 sm:h-16 dark:hidden" />
+          <img src="/branding/vytal-logo-dark.svg" alt="VYTAL" className="h-14 sm:h-16 hidden dark:block" />
+        </div>
+
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 border border-teal-200/80 text-teal-800 text-xs font-semibold">
           <ShieldCheck className="w-4 h-4 text-teal-600" />
           <span>Evidence-Based Healthcare Informatics Research</span>
@@ -138,7 +153,11 @@ export const LandingPage: React.FC = () => {
                     {m.icon}
                   </div>
                 </div>
-                <CardTitle className="text-base">{m.title}</CardTitle>
+                <div>
+                  <CardTitle className="text-base">{m.num} — {m.title}</CardTitle>
+                  <p className="text-xs text-teal-700 font-medium mt-0.5">{m.subtitle}</p>
+                  <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-1 mb-2">Purpose: {m.purpose}</p>
+                </div>
                 <CardDescription className="line-clamp-3 text-xs leading-relaxed">
                   {m.desc}
                 </CardDescription>

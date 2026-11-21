@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 // Multilingual & Auth Contexts
 import '../src/i18n/config';
 import { AuthProvider } from '../src/context/AuthContext';
+import { ThemeProvider } from '../src/context/ThemeContext';
 import { LanguageSelectorModal } from '../src/components/ui/LanguageSelectorModal';
 import { colors } from '../src/theme/colors';
 
@@ -36,8 +37,9 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <StatusBar style="dark" />
-          <Stack
+          <ThemeProvider>
+            <StatusBar style="auto" />
+            <Stack
             screenOptions={{
               headerStyle: {
                 backgroundColor: colors.surface,
@@ -76,31 +78,31 @@ export default function RootLayout() {
             <Stack.Screen
               name="modules/report-explainer"
               options={{
-                title: '01. Report Explainer',
+                title: '01 — LabLens',
               }}
             />
             <Stack.Screen
               name="modules/risk-score"
               options={{
-                title: '02. IDRS Risk Score',
+                title: '02 — RiskPulse',
               }}
             />
             <Stack.Screen
               name="modules/symptom-triage"
               options={{
-                title: '03. Symptom Triage',
+                title: '03 — SymptomSense',
               }}
             />
             <Stack.Screen
               name="modules/medication-check"
               options={{
-                title: '04. Medication Check',
+                title: '04 — MedWise',
               }}
             />
             <Stack.Screen
               name="modules/health-summary"
               options={{
-                title: '05. Health Summary',
+                title: '05 — Vytal360',
               }}
             />
           </Stack>
@@ -109,9 +111,10 @@ export default function RootLayout() {
             visible={langModalVisible}
             onClose={() => setLangModalVisible(false)}
           />
-        </AuthProvider>
-      </QueryClientProvider>
-    </SafeAreaProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </SafeAreaProvider>
   );
 }
 

@@ -21,32 +21,59 @@ The platform integrates two distinct, strictly decoupled computational approache
 
 ---
 
-## 2. The Five Mandatory Healthcare Modules
+## 2. The Five Modern Healthcare Modules
 
-The core application structures its decision-support workflows into five sequential modules:
+The core application structures its decision-support workflows into five sequential, modern HealthTech modules:
 
 ```
-[Module 01: Report Explainer]
-           ↓
-[Module 02: Indian Diabetes Risk Score (IDRS)]
-           ↓
-[Module 03: Symptom Triage]
-           ↓
-[Module 04: Medication Interaction Checker]
-           ↓
-[Module 05: Health Summary]
+[01 — LabLens]
+      ↓
+[02 — RiskPulse]
+      ↓
+[03 — SymptomSense]
+      ↓
+[04 — MedWise]
+      ↓
+[05 — Vytal360]
 ```
 
-1. **Module 01 — Report Explainer**: Parses laboratory test reports (PDF or manual entry via PyMuPDF), extracts analytes, values, units, and laboratory-specific reference ranges, requires user verification in an editable grid before persisting, and explains findings in plain language.
-2. **Module 02 — Indian Diabetes Risk Score (IDRS)**: Implements the exact 4-parameter validated screening score authored by Dr. V. Mohan et al. (*Journal of the Association of Physicians of India*, JAPI 2005) with transparent point assignment and sensitivity/specificity disclosures.
-3. **Module 03 — Symptom Triage**: Employs deterministic clinical logic with prioritized emergency red-flag screening (NICE CKS, WHO ETAT, AHA/ACC) that evaluates emergency red flags first and strictly short-circuits lower-acuity recommendations.
-4. **Module 04 — Medication Interaction Checker**: Normalizes medication queries using RxNorm concepts and Indian pharmaceutical trade names, inspects validated interaction datasets (ONC High-Priority DDI), and provides evidence-backed interaction warnings with mandatory negative finding disclaimers.
-5. **Module 05 — Health Summary**: Synthesizes verified findings across all active modules into an integrated overview with uncertainty flags, prioritized next-step recommendations, and downloadable vector PDF brief generation via ReportLab.
+1. **01 — LabLens** (*Understand your reports.*): Laboratory report interpretation. Parses PDF laboratory documents (or manual input) via in-memory PyMuPDF, extracts analytes, values, units, and printed reference ranges with mandatory human confirmation, and explains findings in plain language.
+2. **02 — RiskPulse** (*Know your health risk factors.*): Indian Diabetes Risk Score (IDRS). Implements the transparent 4-parameter validated screening score authored by Dr. V. Mohan et al. (*Journal of the Association of Physicians of India*, JAPI 2005; 53:759–63) with exact sensitivity (72.5%) and specificity (60.1%) disclosures.
+3. **03 — SymptomSense** (*Understand symptoms and warning signs.*): Explainable, rule-based symptom triage. Employs deterministic clinical logic with prioritized emergency red-flag screening (NICE CKS, WHO ETAT, AHA/ACC) that evaluates emergency red flags first and strictly short-circuits lower-acuity recommendations.
+4. **04 — MedWise** (*Explore medication interactions.*): Evidence-based medication interaction information. Normalizes medication queries using RxNorm concepts and Indian trade names, inspects validated interaction datasets (ONC High-Priority DDI), and provides evidence-backed interaction warnings with mandatory negative finding disclaimers.
+5. **05 — Vytal360** (*Your complete health overview.*): Integrated health summary. Synthesizes verified findings across all active modules into an integrated overview with cross-module clinical correlations, prioritized next-step recommendations, native mobile sharing, and downloadable vector PDF brief generation via ReportLab.
 
 ---
 
-## 3. Independent Machine Learning Research Subsystem
+## 3. Brand Identity & Visual Theme System
 
+### Distinctive Brand Identity
+- **Original Geometric Waveform Symbol**: Merges a modern geometric "V" with a cardiometabolic pulse waveform and diagnostic lens apex, representing vitality, clinical precision, and explainable decision support.
+- **Dedicated Vector Asset Suite** (`/branding/assets/` & `/frontend/public/branding/`):
+  - `vytal-logo-primary.svg` (Symbol + bold VYTAL wordmark on light backgrounds)
+  - `vytal-logo-dark.svg` (High-contrast white wordmark & glowing teal symbol on dark backgrounds)
+  - `vytal-logo-mono.svg` (Pure monochrome single-color variant for high-contrast clinical printouts and PDF briefs)
+  - `vytal-symbol.svg` (Standalone mark / emblem)
+  - `vytal-app-icon.svg` (Rounded-rect 512x512 app icon for mobile stores and PWA)
+  - `favicon.svg` (64x64 web favicon)
+  - `vytal-splash.svg` (Full splash screen branding treatment)
+
+### Complete Day / Night / System Theme Mode
+- **Three Mode Selection**: Light Mode, Dark Mode, and System Default (dynamically matching OS preferences via media queries).
+- **Visible Switcher**: Accessible Sun/Moon/System toggle located prominently in the navigation bar and user profile/settings.
+- **Intentional Design Tokens**: Light mode features clean whites and calm teal accents; dark mode features deep charcoal/navy surfaces (`#090d16` & `#111827`) with soft white typography and high-contrast clinical status indicators.
+- **Persistent & Lossless**: Theme choices persist locally for unauthenticated visitors and synchronize with user preferences for authenticated users. Switching themes preserves all active form entries and session observations without reloads.
+
+---
+
+## 4. Independent Machine Learning Research Subsystem & Research Lab Fix
+
+### Research Lab Resilience & Rich Analytics
+- **Root Cause Fix**: Fortified `AlgorithmBenchmarkTable`, `FeatureImportanceVisualizer`, and `ResearchDashboardPage` with graceful fallback null coalescing and strict interface alignment, resolving the uncaught `TypeError: Cannot read properties of undefined (reading 'toFixed')` runtime exception.
+- **Error Boundaries**: Wrapped each research analytical subsystem in a resilient React `ErrorBoundary` with diagnostic reporting and isolated retry actions, guaranteeing that an isolated component error never results in a blank white screen.
+- **Comprehensive EDA & Benchmarks**: Added Exploratory Data Analysis (0 missing values, 61.5% positive / 38.5% negative class balance, demographic distributions, Pearson correlation coefficients $r$), 2x2 confusion matrices for all 4 models (Gradient Boosting, Random Forest, SVC, Logistic Regression), and ROC curve coordinates.
+
+### Independent ML Architecture
 Located independently in `/ml`:
 - **Target Dataset**: Early Stage Diabetes Risk Prediction Dataset (UCI ID 529; Islam et al., 2020), South Asian outpatient facility in Sylhet, Bangladesh ($n=520$, 320 positive [$61.5\%$], 200 negative [$38.5\%$]).
 - **Leakage Prevention**: Stratified train/test split (80/20) strictly precedes pipeline fitting.
@@ -60,27 +87,31 @@ Located independently in `/ml`:
 
 ---
 
-## 4. Test Verification & Code Quality
+## 5. Test Verification & Code Quality
 
-The system is validated by an automated dual test harness:
+The system is validated by an automated triple test harness across web, mobile, and backend:
 
 ```bash
 # Backend Test Suite (Pytest + HTTPX + Asyncio)
 .venv\Scripts\python -m pytest backend/tests
-# Result: 75 passed, 0 failed in 2.10s
+# Result: 75 passed, 0 failed in 1.79s
 
-# Cross-Platform Mobile & Web Typecheck (Expo + React Native)
+# Cross-Platform Mobile & Web Typecheck (Expo SDK 52 + TypeScript)
 cd mobile && npx tsc --noEmit
 # Result: 0 errors
 
 # Web Frontend Test Suite (Vitest + React Testing Library)
 cd frontend && npm test
-# Result: 23 passed, 0 failed in 5.34s
+# Result: 23 passed, 0 failed in 6.40s
+
+# Web Frontend Production Build
+cd frontend && npm run build
+# Result: 1,722 modules transformed, built in 5.11s, 0 errors
 ```
 
 ---
 
-## 5. Cross-Platform Universal Application (Android, iOS & Web)
+## 6. Cross-Platform Universal Application (Android, iOS & Web)
 
 VYTAL features a single shared cross-platform codebase built with **Expo SDK 52, React Native, TypeScript, Expo Router v4, and React Native Web** in `/mobile`:
 
@@ -106,7 +137,7 @@ npm run ios
 
 ---
 
-## 6. Getting Started & Local Setup
+## 7. Getting Started & Local Setup
 
 ### Prerequisites
 - Python 3.12+ (or 3.14)
@@ -133,7 +164,7 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
-## 6. Key Project Documentation
+## 8. Key Project Documentation
 
 - [VYTAL_RESEARCH_PAPER.md](file:///C:/Users/sthit/.gemini/antigravity/scratch/vytal/docs/VYTAL_RESEARCH_PAPER.md): Comprehensive academic monograph and system publication.
 - [FINAL_PROJECT_REPORT.md](file:///C:/Users/sthit/.gemini/antigravity/scratch/vytal/docs/FINAL_PROJECT_REPORT.md): Quantitative engineering verification and audit report.

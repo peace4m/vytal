@@ -214,10 +214,13 @@ export const SymptomTriagePage: React.FC = () => {
             <Badge variant="normal">Deterministic Clinical Rule Engine</Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
-            Symptom Triage & Red-Flag Guidance
+            03 — SymptomSense
           </h1>
+          <p className="text-xs font-semibold text-teal-700 mt-0.5">
+            Understand symptoms and warning signs.
+          </p>
           <p className="text-sm text-slate-500 mt-1 max-w-2xl">
-            A transparent clinical rule engine governed by emergency-first evaluation. Life-threatening
+            Purpose: Explainable, rule-based symptom triage. A transparent clinical rule engine governed by emergency-first evaluation. Life-threatening
             red flags evaluate first and cannot be overridden by lower-priority or routine findings.
           </p>
         </div>

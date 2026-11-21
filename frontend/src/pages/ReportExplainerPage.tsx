@@ -129,10 +129,13 @@ export const ReportExplainerPage: React.FC = () => {
             <Badge variant="normal">PyMuPDF In-Memory Engine</Badge>
           </div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
-            Report Explainer
+            01 — LabLens
           </h1>
+          <p className="text-xs font-semibold text-teal-700 mt-0.5">
+            Understand your reports.
+          </p>
           <p className="text-xs text-slate-500 mt-0.5">
-            Extracts test names, observed values, and printed reference ranges with mandatory human verification.
+            Purpose: Laboratory report interpretation. Extracts test names, observed values, and printed reference ranges with mandatory human verification.
           </p>
         </div>
 
