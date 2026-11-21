@@ -46,20 +46,20 @@ export const Modal: React.FC<ModalProps> = ({
       <div
         className={twMerge(
           clsx(
-            'relative bg-white rounded-2xl shadow-xl border border-slate-200/80 w-full max-w-lg p-6 overflow-hidden z-10 transition-all',
+            'relative bg-white dark:bg-[#111726] rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-800 w-full max-w-lg p-6 overflow-hidden z-10 transition-all',
             className
           )
         )}
       >
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
           {title ? (
-            <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
           ) : (
             <div />
           )}
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />

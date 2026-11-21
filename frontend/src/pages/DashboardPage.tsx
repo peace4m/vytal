@@ -94,12 +94,12 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Dashboard Top Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
             Decision-Support Workspace
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Access the five healthcare modules in sequential order, or explore the independent ML research engine.
           </p>
         </div>
@@ -111,7 +111,7 @@ export const DashboardPage: React.FC = () => {
               size="sm"
               onClick={handlePurge}
               isLoading={isPurging}
-              className="text-rose-600 border-rose-200 hover:bg-rose-50"
+              className="text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-900/60 hover:bg-rose-50 dark:hover:bg-rose-950/40"
             >
               <Trash2 className="w-4 h-4 mr-1.5" />
               <span>{t('actions.clearData')}</span>
@@ -134,30 +134,30 @@ export const DashboardPage: React.FC = () => {
 
       {/* Module Cards Grid */}
       <div className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
           Core Healthcare Modules (Fixed Sequence)
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {moduleItems.map((m) => (
-            <Card key={m.num} className="hover:border-teal-300 hover:shadow-md transition-all">
+            <Card key={m.num} className="hover:border-teal-400/60 dark:hover:border-teal-500/50 hover:shadow-md transition-all">
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded">
+                  <span className="text-xs font-mono font-bold text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-2 py-0.5 rounded border border-teal-100 dark:border-teal-900">
                     MODULE {m.num}
                   </span>
                   <Badge variant="normal" size="sm">{m.status}</Badge>
                 </div>
                 <div className="flex items-center gap-2.5 mt-1">
-                  <div className="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                  <div className="p-2 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700/60">
                     {m.icon}
                   </div>
                   <div>
                     <CardTitle className="text-base">{m.num} — {m.title}</CardTitle>
-                    <p className="text-xs text-teal-700 font-medium">{m.subtitle}</p>
+                    <p className="text-xs text-teal-700 dark:text-teal-400 font-medium">{m.subtitle}</p>
                   </div>
                 </div>
                 <div className="mt-2 space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
                     Purpose: {m.purpose}
                   </span>
                   <CardDescription className="text-xs leading-relaxed">
@@ -169,7 +169,7 @@ export const DashboardPage: React.FC = () => {
                 <Link to={m.route}>
                   <Button variant="outline" size="sm" fullWidth className="group justify-between">
                     <span>Launch {m.title}</span>
-                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-teal-600 group-hover:translate-x-0.5 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-teal-600 dark:group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
                   </Button>
                 </Link>
               </CardContent>

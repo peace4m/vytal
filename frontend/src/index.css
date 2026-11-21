@@ -1,95 +1,195 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --color-primary: #0d9488;
-    --color-primary-hover: #0f766e;
-    --color-secondary: #059669;
-    --color-navy: #0f172a;
-    --color-navy-muted: #334155;
-    --color-surface: #ffffff;
-    --color-background: #f8fafc;
-  }
+@custom-variant dark (&:where(.dark, .dark *));
 
-  :root.dark, .dark {
-    --color-primary: #14b8a6;
-    --color-primary-hover: #2dd4bf;
-    --color-secondary: #10b981;
-    --color-navy: #f8fafc;
-    --color-navy-muted: #94a3b8;
-    --color-surface: #0f172a;
-    --color-background: #020617;
-    color-scheme: dark;
-  }
+/* ========================================================
+   VYTAL DESIGN SYSTEM: LIGHT & DARK THEME TOKENS
+   ======================================================== */
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-navy);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
+:root {
+  --color-primary: #0d9488;
+  --color-primary-hover: #0f766e;
+  --color-secondary: #059669;
+  --color-navy: #0f172a;
+  --color-navy-muted: #334155;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f8fafc;
+  --color-background: #f8fafc;
+  --color-border: #e2e8f0;
+  color-scheme: light;
+}
 
-  .dark body {
-    background-color: #020617;
-    color: #f8fafc;
-  }
+:root.dark, html.dark, [data-theme="dark"] {
+  --color-primary: #14b8a6;
+  --color-primary-hover: #2dd4bf;
+  --color-secondary: #10b981;
+  --color-navy: #f8fafc;
+  --color-navy-muted: #94a3b8;
+  --color-surface: #0f172a;
+  --color-surface-subtle: #1e293b;
+  --color-background: #090d16;
+  --color-border: #1e293b;
+  color-scheme: dark;
+}
 
-  /* Dark mode component helper overrides */
-  .dark .bg-white {
-    background-color: #0f172a;
-  }
-  .dark .bg-slate-50 {
-    background-color: #1e293b;
-  }
-  .dark .bg-slate-100 {
-    background-color: #334155;
-  }
-  .dark .border-slate-200, .dark .border-slate-100 {
-    border-color: #334155;
-  }
-  .dark .text-slate-900 {
-    color: #f8fafc;
-  }
-  .dark .text-slate-800 {
-    color: #f1f5f9;
-  }
-  .dark .text-slate-700 {
-    color: #e2e8f0;
-  }
-  .dark .text-slate-600 {
-    color: #cbd5e1;
-  }
-  .dark .text-slate-500 {
-    color: #94a3b8;
-  }
-  .dark .bg-teal-50 {
-    background-color: rgba(13, 148, 136, 0.15);
-  }
-  .dark .bg-emerald-50 {
-    background-color: rgba(16, 185, 129, 0.15);
-  }
-  .dark .bg-rose-50 {
-    background-color: rgba(225, 29, 72, 0.15);
-  }
-  .dark .bg-amber-50 {
-    background-color: rgba(245, 158, 11, 0.15);
-  }
-  .dark .text-teal-950, .dark .text-teal-900 {
-    color: #2dd4bf;
-  }
-  .dark .text-emerald-950, .dark .text-emerald-900 {
-    color: #34d399;
-  }
+/* Base Body Styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-navy);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 100vh;
+}
 
-  /* Devanagari (Hindi) specific script enhancement */
-  [lang="hi"] {
-    font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
-    line-height: 1.6;
-  }
+html.dark body, body.dark, [data-theme="dark"] body {
+  background-color: #090d16;
+  color: #f8fafc;
+}
 
-  /* Odia specific script enhancement */
-  [lang="or"] {
-    font-family: 'Noto Sans Oriya', 'Inter', sans-serif;
-    line-height: 1.65;
-  }
+/* ========================================================
+   GLOBAL HIGH-SPECIFICITY DARK THEME OVERRIDES
+   Ensures every card, table, input, modal and screen adapts
+   ======================================================== */
+
+html.dark .bg-white,
+[data-theme="dark"] .bg-white {
+  background-color: #0f172a !important;
+}
+
+html.dark .bg-slate-50,
+[data-theme="dark"] .bg-slate-50 {
+  background-color: #090d16 !important;
+}
+
+html.dark .bg-slate-100,
+[data-theme="dark"] .bg-slate-100 {
+  background-color: #1e293b !important;
+}
+
+html.dark .border-slate-200,
+html.dark .border-slate-100,
+html.dark .border-slate-300,
+html.dark [class*="border-slate-200"],
+html.dark [class*="border-slate-100"],
+html.dark [class*="border-slate-300"],
+[data-theme="dark"] .border-slate-200,
+[data-theme="dark"] .border-slate-100,
+[data-theme="dark"] [class*="border-slate-200"],
+[data-theme="dark"] [class*="border-slate-100"] {
+  border-color: #1e293b !important;
+}
+
+html.dark .text-slate-900,
+[data-theme="dark"] .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-800,
+[data-theme="dark"] .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-700,
+[data-theme="dark"] .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600,
+[data-theme="dark"] .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-500,
+[data-theme="dark"] .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-400,
+[data-theme="dark"] .text-slate-400 {
+  color: #64748b !important;
+}
+
+/* Dark mode inputs and forms */
+html.dark input,
+html.dark select,
+html.dark textarea,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+[data-theme="dark"] input::placeholder {
+  color: #64748b !important;
+}
+
+/* Clinical Status Badges & Alert Containers in Dark Mode */
+html.dark .bg-teal-50,
+[data-theme="dark"] .bg-teal-50 {
+  background-color: rgba(13, 148, 136, 0.16) !important;
+  border-color: rgba(13, 148, 136, 0.35) !important;
+}
+
+html.dark .bg-emerald-50,
+[data-theme="dark"] .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark .bg-rose-50,
+[data-theme="dark"] .bg-rose-50 {
+  background-color: rgba(225, 29, 72, 0.16) !important;
+  border-color: rgba(225, 29, 72, 0.35) !important;
+}
+
+html.dark .bg-amber-50,
+[data-theme="dark"] .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+html.dark .text-teal-950,
+html.dark .text-teal-900,
+html.dark .text-teal-800,
+html.dark .text-teal-700,
+[data-theme="dark"] .text-teal-950,
+[data-theme="dark"] .text-teal-900,
+[data-theme="dark"] .text-teal-800,
+[data-theme="dark"] .text-teal-700 {
+  color: #2dd4bf !important;
+}
+
+html.dark .text-emerald-950,
+html.dark .text-emerald-900,
+html.dark .text-emerald-800,
+html.dark .text-emerald-700,
+[data-theme="dark"] .text-emerald-950,
+[data-theme="dark"] .text-emerald-900 {
+  color: #34d399 !important;
+}
+
+html.dark .text-rose-800,
+html.dark .text-rose-700,
+[data-theme="dark"] .text-rose-800 {
+  color: #fb7185 !important;
+}
+
+html.dark .text-amber-800,
+html.dark .text-amber-700,
+[data-theme="dark"] .text-amber-800 {
+  color: #fcd34d !important;
+}
+
+/* Multilingual Typography Enhancements */
+[lang="hi"] {
+  font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+[lang="or"] {
+  font-family: 'Noto Sans Oriya', 'Inter', sans-serif;
+  line-height: 1.65;
 }

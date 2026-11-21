@@ -11,10 +11,10 @@ export const AboutPage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-8 py-4">
       <div>
         <Badge variant="info">Informatics Research</Badge>
-        <h1 className="text-3xl font-bold text-slate-900 tracking-tight mt-2">
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight mt-2">
           About VYTAL & Methodological Foundations
         </h1>
-        <p className="text-slate-600 text-sm mt-2 leading-relaxed">
+        <p className="text-slate-600 dark:text-slate-300 text-sm mt-2 leading-relaxed">
           {t('brand.subtitle')}
         </p>
       </div>
@@ -23,11 +23,11 @@ export const AboutPage: React.FC = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2 mb-1">
-              <ShieldCheck className="w-5 h-5 text-teal-600" />
+              <ShieldCheck className="w-5 h-5 text-teal-600 dark:text-teal-400" />
               <CardTitle className="text-base">Deterministic Safety Rules</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-xs text-slate-600 leading-relaxed space-y-2">
+          <CardContent className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
             <p>
               In high-stakes clinical decision-support, statistical machine learning models must never be trusted with emergent life-or-death decisions.
             </p>
@@ -40,11 +40,11 @@ export const AboutPage: React.FC = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2 mb-1">
-              <Cpu className="w-5 h-5 text-emerald-600" />
+              <Cpu className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               <CardTitle className="text-base">Independent ML Subsystem</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-xs text-slate-600 leading-relaxed space-y-2">
+          <CardContent className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
             <p>
               The machine learning research engine is an autonomous data science pipeline exploring diabetes risk classification on South Asian clinical cohorts (Islam et al., 2020, UCI 529).
             </p>
@@ -58,28 +58,28 @@ export const AboutPage: React.FC = () => {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-teal-600" />
+            <BookOpen className="w-5 h-5 text-teal-600 dark:text-teal-400" />
             <CardTitle className="text-base">Primary Literature Citations</CardTitle>
           </div>
         </CardHeader>
-        <CardContent className="text-xs text-slate-600 space-y-3">
-          <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <h5 className="font-semibold text-slate-900">Indian Diabetes Risk Score (IDRS)</h5>
-            <p className="text-slate-500 mt-0.5">
+        <CardContent className="text-xs text-slate-600 dark:text-slate-300 space-y-3">
+          <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-lg border border-slate-100 dark:border-slate-800">
+            <h5 className="font-semibold text-slate-900 dark:text-slate-100">Indian Diabetes Risk Score (IDRS)</h5>
+            <p className="text-slate-500 dark:text-slate-400 mt-0.5">
               Mohan V, Deepa R, Deepa M, Somannavar S, Datta M. <em>A simplified Indian Diabetes Risk Score for screening for undiagnosed diabetic subjects</em>. <strong>Journal of the Association of Physicians of India</strong> (JAPI). 2005 Sep;53:759–63. PMID: 16334622.
             </p>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <h5 className="font-semibold text-slate-900">South Asian Clinical Benchmark Dataset</h5>
-            <p className="text-slate-500 mt-0.5">
+          <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-lg border border-slate-100 dark:border-slate-800">
+            <h5 className="font-semibold text-slate-900 dark:text-slate-100">South Asian Clinical Benchmark Dataset</h5>
+            <p className="text-slate-500 dark:text-slate-400 mt-0.5">
               Islam MMF, Ferdousi R, Rahman S, Bushra HY. <em>Likelihood Prediction of Diabetes at Early Stage Using Data Mining Techniques</em>. <strong>Computer Methods and Programs in Biomedicine</strong> (UCI ID: 529, Sylhet Diabetes Hospital, Bangladesh).
             </p>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
-            <h5 className="font-semibold text-slate-900">Explainable AI Attribution</h5>
-            <p className="text-slate-500 mt-0.5">
+          <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-lg border border-slate-100 dark:border-slate-800">
+            <h5 className="font-semibold text-slate-900 dark:text-slate-100">Explainable AI Attribution</h5>
+            <p className="text-slate-500 dark:text-slate-400 mt-0.5">
               Lundberg SM, Lee SI. <em>A Unified Approach to Interpreting Model Predictions</em>. <strong>Advances in Neural Information Processing Systems (NeurIPS 30)</strong>; 2017.
             </p>
           </div>

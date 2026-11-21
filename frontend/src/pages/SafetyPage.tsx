@@ -12,10 +12,10 @@ export const SafetyPage: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-8 py-4">
       <div>
         <Badge variant="emergency">Mandatory Safety Position</Badge>
-        <h1 className="text-3xl font-bold text-slate-900 tracking-tight mt-2">
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight mt-2">
           Safety Boundaries & Non-Device Determination
         </h1>
-        <p className="text-slate-600 text-sm mt-2 leading-relaxed">
+        <p className="text-slate-600 dark:text-slate-300 text-sm mt-2 leading-relaxed">
           VYTAL is strictly an educational and informatics research prototype. It is not a medical device.
         </p>
       </div>
@@ -26,55 +26,55 @@ export const SafetyPage: React.FC = () => {
 
       {/* Negative Scope vs Positive Scope */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Card className="border-rose-200 bg-rose-50/20">
+        <Card className="border-rose-200 dark:border-rose-900/60 bg-rose-50/20 dark:bg-rose-950/20">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <XCircle className="w-5 h-5 text-rose-600" />
-              <CardTitle className="text-base text-rose-900">What VYTAL NEVER Does</CardTitle>
+              <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
+              <CardTitle className="text-base text-rose-900 dark:text-rose-300">What VYTAL NEVER Does</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-xs text-slate-700 space-y-2.5">
+          <CardContent className="text-xs text-slate-700 dark:text-slate-300 space-y-2.5">
             <div className="flex items-start gap-2">
-              <span className="text-rose-600 font-bold">•</span>
+              <span className="text-rose-600 dark:text-rose-400 font-bold">•</span>
               <span><strong>Never Diagnoses Disease</strong>: The system does not confirm or rule out illness.</span>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-rose-600 font-bold">•</span>
+              <span className="text-rose-600 dark:text-rose-400 font-bold">•</span>
               <span><strong>Never Prescribes Medication</strong>: The system never advises drug initiation or dosage titration.</span>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-rose-600 font-bold">•</span>
+              <span className="text-rose-600 dark:text-rose-400 font-bold">•</span>
               <span><strong>Never Tells You to Stop Medication</strong>: All prescription changes must be clinician-directed.</span>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-rose-600 font-bold">•</span>
+              <span className="text-rose-600 dark:text-rose-400 font-bold">•</span>
               <span><strong>Never Overrides Emergency Care</strong>: ML models never modify clinical triage warnings.</span>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-teal-200 bg-teal-50/20">
+        <Card className="border-teal-200 dark:border-teal-900/60 bg-teal-50/20 dark:bg-teal-950/20">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-teal-600" />
-              <CardTitle className="text-base text-teal-900">What VYTAL Provides</CardTitle>
+              <CheckCircle2 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              <CardTitle className="text-base text-teal-900 dark:text-teal-300">What VYTAL Provides</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="text-xs text-slate-700 space-y-2.5">
+          <CardContent className="text-xs text-slate-700 dark:text-slate-300 space-y-2.5">
             <div className="flex items-start gap-2">
-              <span className="text-teal-600 font-bold">•</span>
+              <span className="text-teal-600 dark:text-teal-400 font-bold">•</span>
               <span><strong>Plain-Language Biomarker Education</strong>: Simple explanations of laboratory test results.</span>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-teal-600 font-bold">•</span>
+              <span className="text-teal-600 dark:text-teal-400 font-bold">•</span>
               <span><strong>Validated Screening Scores</strong>: Transparent implementation of Mohan et al. IDRS.</span>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-teal-600 font-bold">•</span>
+              <span className="text-teal-600 dark:text-teal-400 font-bold">•</span>
               <span><strong>Emergency Warning Screening</strong>: Red-flag triage matching established NICE/WHO guidance.</span>
             </div>
             <div className="flex items-start gap-2">
-              <span className="text-teal-600 font-bold">•</span>
+              <span className="text-teal-600 dark:text-teal-400 font-bold">•</span>
               <span><strong>Drug Interaction Context</strong>: Normalization via RxNorm & documented evidence tables.</span>
             </div>
           </CardContent>
@@ -85,11 +85,11 @@ export const SafetyPage: React.FC = () => {
         <CardHeader>
           <CardTitle className="text-base">Regulatory Non-Device Determination</CardTitle>
         </CardHeader>
-        <CardContent className="text-xs text-slate-600 leading-relaxed space-y-2">
+        <CardContent className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed space-y-2">
           <p>
             Under Section 3060 of the 21st Century Cures Act and the US FDA Clinical Decision Support (CDS) Guidance (September 2022), VYTAL meets all four Non-Device criteria:
           </p>
-          <ol className="list-decimal pl-4 space-y-1 text-slate-700">
+          <ol className="list-decimal pl-4 space-y-1 text-slate-700 dark:text-slate-300">
             <li>It does not acquire, process, or analyze medical images or physiological signals.</li>
             <li>It displays and analyzes confirmed laboratory information and published scoring factors.</li>
             <li>It provides decision-support information to support health literacy.</li>

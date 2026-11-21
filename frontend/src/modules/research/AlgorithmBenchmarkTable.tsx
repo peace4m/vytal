@@ -29,16 +29,16 @@ interface AlgorithmBenchmarkTableProps {
 
 export const AlgorithmBenchmarkTable: React.FC<AlgorithmBenchmarkTableProps> = ({ models }) => {
   return (
-    <Card className="border-slate-200 shadow-xs">
-      <CardHeader className="pb-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+    <Card className="border-slate-200 dark:border-slate-800 shadow-xs">
+      <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-amber-500" />
-            <CardTitle className="text-base font-bold text-slate-900">
+            <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
               Comparative Algorithmic Benchmarks
             </CardTitle>
           </div>
-          <CardDescription className="text-xs">
+          <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
             Stratified 5-Fold Cross-Validation evaluated with zero data leakage (random seed 42).
           </CardDescription>
         </div>
@@ -69,21 +69,21 @@ export const AlgorithmBenchmarkTable: React.FC<AlgorithmBenchmarkTableProps> = (
               const brier = m.brier_score ?? 0;
 
               return (
-                <TableRow key={modelId} className={isBest ? 'bg-teal-50/30' : undefined}>
-                  <TableCell className="font-semibold text-slate-900 flex items-center gap-2">
-                    {isBest && <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0" />}
+                <TableRow key={modelId} className={isBest ? 'bg-teal-50/40 dark:bg-teal-950/30' : undefined}>
+                  <TableCell className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    {isBest && <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />}
                     <span>{m.algorithm}</span>
                   </TableCell>
                   <TableCell className="font-mono">{(acc * 100).toFixed(1)}%</TableCell>
                   <TableCell className="font-mono">{(prec * 100).toFixed(1)}%</TableCell>
-                  <TableCell className="font-mono font-bold text-teal-900">
+                  <TableCell className="font-mono font-bold text-teal-900 dark:text-teal-300">
                     {(rec * 100).toFixed(1)}%
                   </TableCell>
                   <TableCell className="font-mono">{(f1 * 100).toFixed(1)}%</TableCell>
-                  <TableCell className="font-mono font-bold text-teal-900">
+                  <TableCell className="font-mono font-bold text-teal-900 dark:text-teal-300">
                     {rocAuc.toFixed(3)}
                   </TableCell>
-                  <TableCell className="font-mono text-slate-500">
+                  <TableCell className="font-mono text-slate-500 dark:text-slate-400">
                     {brier.toFixed(3)}
                   </TableCell>
                 </TableRow>

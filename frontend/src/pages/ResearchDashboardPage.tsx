@@ -54,18 +54,18 @@ export const ResearchDashboardPage: React.FC = () => {
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            <span className="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-200 dark:border-emerald-800">
               INDEPENDENT ML SUBSYSTEM
             </span>
             <Badge variant="normal">Stratified 5-Fold Cross-Validation</Badge>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1.5">
             Machine Learning Research & Analytics Dashboard
           </h1>
-          <p className="text-sm text-slate-500 mt-1 max-w-2xl">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
             Independent research pipeline evaluating 4 predictive algorithms, model explainability (XAI),
             and feature attributions on a South Asian outpatient diabetes cohort.
           </p>
@@ -138,47 +138,47 @@ export const ResearchDashboardPage: React.FC = () => {
         <div className="space-y-8">
           {/* Dataset Provenance Card */}
           <ErrorBoundary sectionName="Cohort Provenance Card">
-            <Card className="border-slate-200 shadow-2xs">
-              <CardHeader className="pb-3 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <Card className="border-slate-200 dark:border-slate-800 shadow-2xs">
+              <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <Database className="w-5 h-5 text-teal-600" />
-                  <CardTitle className="text-base font-bold text-slate-900">
+                  <Database className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                  <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
                     Target Cohort Dataset Provenance
                   </CardTitle>
                 </div>
                 <Badge variant="info">UCI Machine Learning Repository #529</Badge>
               </CardHeader>
               <CardContent className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                  <span className="text-slate-400 font-semibold uppercase text-[10px]">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1">
+                  <span className="text-slate-400 dark:text-slate-500 font-semibold uppercase text-[10px]">
                     Target Population
                   </span>
-                  <p className="font-bold text-slate-900 text-sm">
+                  <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">
                     {overview?.population || 'South Asian (Sylhet, Bangladesh)'}
                   </p>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     Sylhet Diabetes Hospital Outpatient Facility
                   </p>
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                  <span className="text-slate-400 font-semibold uppercase text-[10px]">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1">
+                  <span className="text-slate-400 dark:text-slate-500 font-semibold uppercase text-[10px]">
                     Cohort Dimension
                   </span>
-                  <p className="font-bold text-slate-900 text-sm">
+                  <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">
                     {overview?.primary_cohort_size || 520} Verified Clinical Instances
                   </p>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     320 Positive (61.5%) / 200 Negative (38.5%)
                   </p>
                 </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
-                  <span className="text-slate-400 font-semibold uppercase text-[10px]">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-xl border border-slate-100 dark:border-slate-800 space-y-1">
+                  <span className="text-slate-400 dark:text-slate-500 font-semibold uppercase text-[10px]">
                     Evaluated Features
                   </span>
-                  <p className="font-bold text-slate-900 text-sm">16 Clinical Signs & Symptoms</p>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">16 Clinical Signs & Symptoms</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
                     Age, Gender, Polyuria, Polydipsia, Weight Loss, etc.
                   </p>
                 </div>

@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Languages, Sparkles } from 'lucide-react';
-import { Badge } from '@/components/ui/Badge';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { VytalLogo } from '@/components/brand/VytalLogo';
 
 export const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -26,26 +26,12 @@ export const Header: React.FC = () => {
   ];
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <header className="bg-white/95 dark:bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand Logo & Tagline */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-slate-800 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform overflow-hidden p-1.5 border border-slate-200 dark:border-slate-700">
-              <img src="/branding/vytal-symbol.svg" alt="VYTAL Logo Mark" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xl font-black tracking-tight text-slate-900 dark:text-slate-100 font-sans">
-                  VYTAL
-                </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
-                <Badge variant="info" size="sm" className="hidden sm:inline-flex">Decision Support</Badge>
-              </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
-                {t('brand.tagline')}
-              </p>
-            </div>
+          {/* Brand Identity & Wordmark */}
+          <Link to="/" className="group flex items-center">
+            <VytalLogo size="md" showTagline={true} />
           </Link>
 
           {/* Navigation Links for Desktop */}
@@ -58,8 +44,8 @@ export const Header: React.FC = () => {
                   to={link.path}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     isActive
-                      ? 'bg-teal-50 text-teal-700 font-semibold'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 font-semibold border border-teal-200/60 dark:border-teal-800/60'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
                   {link.label}
@@ -72,12 +58,12 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
 
-            <div className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-700">
-              <Languages className="w-4 h-4 text-slate-400" />
+            <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-200 transition-colors">
+              <Languages className="w-4 h-4 text-slate-400 dark:text-slate-400" />
               <select
                 value={activeLang}
                 onChange={handleLanguageChange}
-                className="bg-transparent border-none text-xs font-medium focus:outline-none cursor-pointer pr-1"
+                className="bg-transparent border-none text-xs font-medium focus:outline-none cursor-pointer pr-1 text-slate-800 dark:text-slate-200"
                 aria-label="Select Language"
               >
                 <optgroup label="Indian Languages">
@@ -108,9 +94,9 @@ export const Header: React.FC = () => {
 
             <Link
               to="/research-dashboard"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium hover:bg-emerald-100 transition-colors border border-emerald-200/60"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded-lg text-xs font-medium hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors border border-emerald-200/60 dark:border-emerald-800/60"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Research Lab</span>
             </Link>
           </div>

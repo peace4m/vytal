@@ -6,6 +6,7 @@ export type ResolvedTheme = 'light' | 'dark';
 interface ThemeContextType {
   theme: Theme;
   resolvedTheme: ResolvedTheme;
+  isDark: boolean;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
@@ -19,10 +20,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored === 'light' || stored === 'dark' || stored === 'system') {
-        return stored;
+        return stored as Theme;
       }
     } catch {
-      // Ignore storage errors
+      // Ignore storage errors in restricted contexts
     }
     return 'system';
   });
@@ -32,45 +33,57 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
-  // Calculate and apply theme
+  // Calculate and apply theme immediately to DOM
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
 
-    const computeResolved = (): ResolvedTheme => {
-      if (theme === 'system') {
+    const computeResolved = (currentTheme: Theme): ResolvedTheme => {
+      if (currentTheme === 'system') {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
-      return theme;
+      return currentTheme;
     };
 
-    const resolved = computeResolved();
-    setResolvedTheme(resolved);
+    const applyTheme = (resolved: ResolvedTheme) => {
+      setResolvedTheme(resolved);
 
-    if (resolved === 'dark') {
-      root.classList.add('dark');
-      root.style.colorScheme = 'dark';
-    } else {
-      root.classList.remove('dark');
-      root.style.colorScheme = 'light';
-    }
+      if (resolved === 'dark') {
+        root.classList.add('dark');
+        root.setAttribute('data-theme', 'dark');
+        root.style.colorScheme = 'dark';
+        if (body) {
+          body.classList.add('dark');
+          body.setAttribute('data-theme', 'dark');
+        }
+      } else {
+        root.classList.remove('dark');
+        root.setAttribute('data-theme', 'light');
+        root.style.colorScheme = 'light';
+        if (body) {
+          body.classList.remove('dark');
+          body.setAttribute('data-theme', 'light');
+        }
+      }
+    };
 
-    // Listener for system scheme changes
+    const currentResolved = computeResolved(theme);
+    applyTheme(currentResolved);
+
+    // Listener for system scheme changes when in 'system' mode
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       const handleChange = (e: MediaQueryListEvent) => {
-        const nextResolved = e.matches ? 'dark' : 'light';
-        setResolvedTheme(nextResolved);
-        if (nextResolved === 'dark') {
-          root.classList.add('dark');
-          root.style.colorScheme = 'dark';
-        } else {
-          root.classList.remove('dark');
-          root.style.colorScheme = 'light';
-        }
+        applyTheme(e.matches ? 'dark' : 'light');
       };
 
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      } else if ((mediaQuery as any).addListener) {
+        (mediaQuery as any).addListener(handleChange);
+        return () => (mediaQuery as any).removeListener(handleChange);
+      }
     }
   }, [theme]);
 
@@ -90,7 +103,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        resolvedTheme,
+        isDark: resolvedTheme === 'dark',
+        setTheme,
+        toggleTheme,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

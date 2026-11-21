@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ShieldCheck, BookOpen, Lock, Activity } from 'lucide-react';
+import { ShieldCheck, BookOpen, Lock } from 'lucide-react';
+import { VytalLogo } from '@/components/brand/VytalLogo';
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -12,11 +13,8 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-slate-800">
           {/* Brand & Mission */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 rounded-lg bg-teal-500 flex items-center justify-center text-slate-900">
-                <Activity className="w-4 h-4" />
-              </div>
-              <span className="text-base font-bold text-white tracking-tight">VYTAL</span>
+            <div className="mb-3">
+              <VytalLogo size="sm" showTagline={false} />
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-md mb-3">
               {t('brand.subtitle')}
