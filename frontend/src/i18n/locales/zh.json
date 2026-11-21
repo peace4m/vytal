@@ -1,0 +1,71 @@
+{
+  "brand": {
+    "name": "VYTAL",
+    "tagline": "洞悉健康，化繁为简。",
+    "subtitle": "融合临床确定性规则与机器学习的可解释、多语言医疗健康决策支持平台。"
+  },
+  "nav": {
+    "dashboard": "控制台",
+    "modules": "功能模块",
+    "module1": "01. 化验报告解读",
+    "module2": "02. 印度糖尿病风险评分",
+    "module3": "03. 症状分诊评估",
+    "module4": "04. 药物相互作用查询",
+    "module5": "05. 综合健康报告",
+    "research": "机器学习研究",
+    "about": "关于我们",
+    "safety": "安全边界",
+    "privacy": "隐私保护"
+  },
+  "safety": {
+    "banner": "教育与科研原型系统 — 非医疗器械。严禁用于疾病诊断、处方开具，亦不可替代执业医师诊断。",
+    "emergencyCall": "如您正在经历危及生命的紧急医疗状况，请立即拨打 108、112 或当地急救电话。",
+    "disclaimerTitle": "安全界限与适用范围"
+  },
+  "actions": {
+    "getStarted": "立即开始",
+    "learnMore": "了解更多",
+    "clearData": "清除我的数据",
+    "back": "返回",
+    "next": "下一步",
+    "confirm": "确认并继续",
+    "downloadPdf": "下载 PDF 摘要",
+    "calculate": "计算风险评分",
+    "evaluate": "运行规则评估",
+    "checkInteractions": "检测相互作用",
+    "reset": "重置表单"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "sessionActive": "匿名会话已建立",
+    "verifiedEvidence": "经权威验证的临床证据",
+    "educationalOnly": "仅供教学与科研使用"
+  },
+  "modules": {
+    "reportExplainer": {
+      "title": "医学检验报告解读器",
+      "description": "上传 PDF 化验单或手动输入指标数值。结合实验室参考区间，以通俗易懂的语言解读检验结果。"
+    },
+    "idrs": {
+      "title": "印度糖尿病风险评分 (IDRS)",
+      "description": "计算 Mohan 等人（JAPI 2005）针对南亚成年人群体发表的 4 因素糖尿病风险评估模型。"
+    },
+    "triage": {
+      "title": "症状分诊与急症红旗预警",
+      "description": "基于确定性临床规则引擎，优先评估致命性紧急红旗体征，低优先级指标绝不可覆盖急症预警。"
+    },
+    "medications": {
+      "title": "药物相互作用检测器",
+      "description": "基于 RxNorm 概念归一化与文献证据的药物配对筛查，附带未检索到相互作用的明确免责声明。"
+    },
+    "summary": {
+      "title": "综合健康档案与临床简报",
+      "description": "汇总模块 01 至 04 的已确认检验与评估结果，提供跨模块关联分析及矢量 PDF 简报下载。"
+    },
+    "research": {
+      "title": "机器学习科研与统计分析看板",
+      "description": "独立 ML 实验子系统，在南亚队列数据集上采用分层 5 折交叉验证对 4 种算法进行性能基准评测。"
+    }
+  }
+}

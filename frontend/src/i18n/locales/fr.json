@@ -1,0 +1,71 @@
+{
+  "brand": {
+    "name": "VYTAL",
+    "tagline": "Votre santé, décodée.",
+    "subtitle": "Une plateforme explicable et multilingue d'aide à la décision clinique associant règles médicales et apprentissage automatique."
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "modules": "Modules",
+    "module1": "01. Analyseur de bilans",
+    "module2": "02. Score de risque IDRS",
+    "module3": "03. Triage des symptômes",
+    "module4": "04. Interactions médicamenteuses",
+    "module5": "05. Synthèse de santé",
+    "research": "Recherche ML",
+    "about": "À propos",
+    "safety": "Sécurité",
+    "privacy": "Confidentialité"
+  },
+  "safety": {
+    "banner": "Prototype éducatif et de recherche — CECI N'EST PAS UN DISPOSITIF MÉDICAL. Ne diagnostique jamais, ne prescrit pas et ne remplace aucun professionnel de santé qualifié.",
+    "emergencyCall": "Si vous faites face à une urgence vitale, contactez immédiatement le 108, 112 ou les services de secours locaux.",
+    "disclaimerTitle": "Périmètre de sécurité et usage prévu"
+  },
+  "actions": {
+    "getStarted": "Démarrer",
+    "learnMore": "En savoir plus",
+    "clearData": "Effacer mes données",
+    "back": "Retour",
+    "next": "Suivant",
+    "confirm": "Confirmer et continuer",
+    "downloadPdf": "Télécharger la synthèse PDF",
+    "calculate": "Calculer le score de risque",
+    "evaluate": "Évaluer les règles cliniques",
+    "checkInteractions": "Vérifier les interactions",
+    "reset": "Réinitialiser"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "sessionActive": "Session anonyme active",
+    "verifiedEvidence": "Preuves cliniques vérifiées",
+    "educationalOnly": "Usage strictement éducatif"
+  },
+  "modules": {
+    "reportExplainer": {
+      "title": "Analyseur de bilans biologiques médicaux",
+      "description": "Téléversez un compte rendu PDF ou saisissez manuellement les résultats. Explications en langage clair avec intervalles de référence."
+    },
+    "idrs": {
+      "title": "Score de risque de diabète indien (IDRS)",
+      "description": "Calcul du score de risque à 4 facteurs publié par Mohan et ses collègues (JAPI 2005) pour les adultes sud-asiatiques."
+    },
+    "triage": {
+      "title": "Triage des symptômes et alertes d'urgence",
+      "description": "Moteur de règles déterministes évaluant en priorité absolue les signaux d'alarme vitale sans possibilité d'écrasement."
+    },
+    "medications": {
+      "title": "Détecteur d'interactions médicamenteuses",
+      "description": "Normalisation RxNorm et vérification des interactions validées par la littérature avec clause de non-garantie d'absence d'effet."
+    },
+    "summary": {
+      "title": "Synthèse globale et dossier de santé",
+      "description": "Consolide les constats validés des modules 01 à 04 avec recoupements cliniques et rapport PDF téléchargeable."
+    },
+    "research": {
+      "title": "Tableau de bord de recherche Machine Learning",
+      "description": "Sous-système ML autonome évaluant 4 algorithmes par validation croisée stratifiée 5 blocs sur une cohorte sud-asiatique."
+    }
+  }
+}

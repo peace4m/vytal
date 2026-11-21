@@ -1,0 +1,71 @@
+{
+  "brand": {
+    "name": "VYTAL",
+    "tagline": "Sua saúde, decodificada.",
+    "subtitle": "Uma plataforma explicável e multilíngue de apoio à decisão clínica integrando regras médicas e aprendizado de máquina."
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "modules": "Módulos",
+    "module1": "01. Explicador de exames",
+    "module2": "02. Escore de risco IDRS",
+    "module3": "03. Triagem de sintomas",
+    "module4": "04. Interações medicamentosas",
+    "module5": "05. Resumo de saúde",
+    "research": "Pesquisa ML",
+    "about": "Sobre",
+    "safety": "Segurança",
+    "privacy": "Privacidade"
+  },
+  "safety": {
+    "banner": "Protótipo educacional e de pesquisa — NÃO É UM DISPOSITIVO MÉDICO. Nunca diagnostica, prescreve ou substitui profissionais de saúde qualificados.",
+    "emergencyCall": "Se você estiver enfrentando uma emergência médica com risco de vida, ligue imediatamente para 108, 112 ou serviços de emergência locais.",
+    "disclaimerTitle": "Limites de segurança e uso pretendido"
+  },
+  "actions": {
+    "getStarted": "Começar",
+    "learnMore": "Saiba mais",
+    "clearData": "Limpar meus dados",
+    "back": "Voltar",
+    "next": "Avançar",
+    "confirm": "Confirmar e prosseguir",
+    "downloadPdf": "Baixar resumo em PDF",
+    "calculate": "Calcular pontuação de risco",
+    "evaluate": "Avaliar regras",
+    "checkInteractions": "Verificar interações",
+    "reset": "Redefinir formulário"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro",
+    "sessionActive": "Sessão anônima ativa",
+    "verifiedEvidence": "Evidência clínica verificada",
+    "educationalOnly": "Apenas para fins educacionais"
+  },
+  "modules": {
+    "reportExplainer": {
+      "title": "Explicador de laudos laboratoriais",
+      "description": "Envie um laudo em PDF ou insira os valores manualmente. Explica os resultados em linguagem simples com intervalos de referência."
+    },
+    "idrs": {
+      "title": "Escore Indiano de Risco de Diabetes (IDRS)",
+      "description": "Calcula o modelo de risco de 4 fatores publicado por Mohan e colegas (JAPI 2005) para adultos sul-asiáticos."
+    },
+    "triage": {
+      "title": "Triagem de sintomas e alertas de emergência",
+      "description": "Motor de regras determinísticas avaliado com sinais de alerta vermelho em primeiro lugar, sem anulação por achados menores."
+    },
+    "medications": {
+      "title": "Verificador de interações medicamentosas",
+      "description": "Normalização de conceitos RxNorm e revisão de interações com base em evidências, com aviso explícito de ausência de achado."
+    },
+    "summary": {
+      "title": "Resumo e relatório consolidado de saúde",
+      "description": "Integra os achados validados dos Módulos 01 a 04 com observações cruzadas e relatório em PDF para download."
+    },
+    "research": {
+      "title": "Painel de pesquisa e análise de Machine Learning",
+      "description": "Subsistema de ML independente que avalia 4 algoritmos com validação cruzada estratificada em 5 partes em uma coorte sul-asiática."
+    }
+  }
+}

@@ -8,6 +8,8 @@ export const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
 
+  const activeLang = i18n.resolvedLanguage ? i18n.resolvedLanguage.split('-')[0] : 'en';
+
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(e.target.value);
   };
@@ -67,14 +69,34 @@ export const Header: React.FC = () => {
             <div className="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs text-slate-700">
               <Languages className="w-4 h-4 text-slate-400" />
               <select
-                value={i18n.language}
+                value={activeLang}
                 onChange={handleLanguageChange}
                 className="bg-transparent border-none text-xs font-medium focus:outline-none cursor-pointer pr-1"
                 aria-label="Select Language"
               >
-                <option value="en">English (EN)</option>
-                <option value="hi">हिन्दी (HI)</option>
-                <option value="or">ଓଡ଼ିଆ (OR)</option>
+                <optgroup label="Indian Languages">
+                  <option value="en">English (EN)</option>
+                  <option value="hi">हिन्दी (HI)</option>
+                  <option value="bn">বাংলা (BN)</option>
+                  <option value="mr">मराठी (MR)</option>
+                  <option value="te">తెలుగు (TE)</option>
+                  <option value="ta">தமிழ் (TA)</option>
+                  <option value="gu">ગુજરાતી (GU)</option>
+                  <option value="ur">اردو (UR)</option>
+                  <option value="kn">ಕನ್ನಡ (KN)</option>
+                  <option value="or">ଓଡ଼ିଆ (OR)</option>
+                  <option value="ml">മലയാളം (ML)</option>
+                  <option value="pa">ਪੰਜਾਬੀ (PA)</option>
+                  <option value="as">অসমীয়া (AS)</option>
+                </optgroup>
+                <optgroup label="Global Languages">
+                  <option value="es">Español (ES)</option>
+                  <option value="fr">Français (FR)</option>
+                  <option value="ar">العربية (AR)</option>
+                  <option value="de">Deutsch (DE)</option>
+                  <option value="pt">Português (PT)</option>
+                  <option value="zh">简体中文 (ZH)</option>
+                </optgroup>
               </select>
             </div>
 
