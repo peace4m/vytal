@@ -5,15 +5,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, ArrowRight, Loader2, AlertCircle, ShieldCheck, Info } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
 import { VytalLogo } from '@/components/brand/VytalLogo';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, signInWithEmail, signInWithGoogle, signInWithApple, error: authError, clearError } = useAuth();
+  const { isAuthenticated, isConfigured, signInWithEmail, signInWithGoogle, signInWithApple, error: authError, clearError } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,6 +22,7 @@ export const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
+  const [oauthModal, setOauthModal] = useState<'google' | 'apple' | null>(null);
 
   const from = (location.state as any)?.from?.pathname || '/dashboard';
 
@@ -65,12 +67,20 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleGoogleSignIn = async () => {
+    if (!isConfigured) {
+      setOauthModal('google');
+      return;
+    }
     setIsSubmitting(true);
     await signInWithGoogle();
     setIsSubmitting(false);
   };
 
   const handleAppleSignIn = async () => {
+    if (!isConfigured) {
+      setOauthModal('apple');
+      return;
+    }
     setIsSubmitting(true);
     await signInWithApple();
     setIsSubmitting(false);
@@ -281,6 +291,32 @@ export const LoginPage: React.FC = () => {
           <span>Protected with cryptographic session tokens & local data encryption.</span>
         </div>
       </div>
+
+      {/* OAuth Explanation Modal */}
+      <Modal
+        isOpen={Boolean(oauthModal)}
+        onClose={() => setOauthModal(null)}
+        title={oauthModal === 'google' ? 'Google Sign-In Configuration' : 'Apple Sign-In Configuration'}
+      >
+        <div className="space-y-4 text-xs text-slate-600 dark:text-slate-300">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-teal-900 dark:text-teal-200">
+            <Info className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0" />
+            <span>
+              Real {oauthModal === 'google' ? 'Google' : 'Apple'} login requires connecting an OAuth Client ID from {oauthModal === 'google' ? 'Google Cloud Console' : 'Apple Developer Portal'}.
+            </span>
+          </div>
+
+          <p className="leading-relaxed">
+            Because this is an independent live preview, external social OAuth client secrets are not embedded. You can sign in immediately using your email and password above, or create an account with your own name!
+          </p>
+
+          <div className="pt-3 flex justify-end">
+            <Button onClick={() => setOauthModal(null)} className="text-xs">
+              Got it, use Email & Password
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
