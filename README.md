@@ -1,7 +1,7 @@
 # VYTAL: An Explainable, Multilingual Healthcare Decision-Support Platform Integrating Clinical Rules and Machine Learning
 
 > **Tagline**: *Your Health, Decoded.*  
-> **Status**: **Fully Implemented & Research-Ready (100% Tests Passing)**  
+> **Status**: **Beta — Under Active Development and Validation**  
 > **Live Demo**: 🚀 **[https://peace4m.github.io/vytal/](https://peace4m.github.io/vytal/)**  
 > **Safety Position**: Educational and research prototype. **NOT A MEDICAL DEVICE.** Does not formulate medical diagnoses, prescribe medication, or replace qualified medical professionals.
 
@@ -71,7 +71,7 @@ The core application structures its decision-support workflows into five sequent
 ### Research Lab Resilience & Rich Analytics
 - **Root Cause Fix**: Fortified `AlgorithmBenchmarkTable`, `FeatureImportanceVisualizer`, and `ResearchDashboardPage` with graceful fallback null coalescing and strict interface alignment, resolving the uncaught `TypeError: Cannot read properties of undefined (reading 'toFixed')` runtime exception.
 - **Error Boundaries**: Wrapped each research analytical subsystem in a resilient React `ErrorBoundary` with diagnostic reporting and isolated retry actions, guaranteeing that an isolated component error never results in a blank white screen.
-- **Comprehensive EDA & Benchmarks**: Added Exploratory Data Analysis (0 missing values, 61.5% positive / 38.5% negative class balance, demographic distributions, Pearson correlation coefficients $r$), 2x2 confusion matrices for all 4 models (Gradient Boosting, Random Forest, SVC, Logistic Regression), and ROC curve coordinates.
+- **Comprehensive EDA & Benchmarks**: Added Exploratory Data Analysis (0 missing values, 61.5% positive / 38.5% negative class balance, demographic distributions, Pearson correlation coefficients $r$), 2x2 confusion matrices for all 4 models (Decision Tree, Random Forest, SVC, Logistic Regression), and ROC curve coordinates.
 
 ### Independent ML Architecture
 Located independently in `/ml`:
@@ -94,7 +94,7 @@ The system is validated by an automated triple test harness across web, mobile, 
 ```bash
 # Backend Test Suite (Pytest + HTTPX + Asyncio)
 .venv\Scripts\python -m pytest backend/tests
-# Result: 75 passed, 0 failed in 1.79s
+# Result: 75 passed, 0 failed in 4.58s
 
 # Cross-Platform Mobile & Web Typecheck (Expo SDK 52 + TypeScript)
 cd mobile && npx tsc --noEmit
@@ -102,11 +102,11 @@ cd mobile && npx tsc --noEmit
 
 # Web Frontend Test Suite (Vitest + React Testing Library)
 cd frontend && npm test
-# Result: 23 passed, 0 failed in 6.40s
+# Result: 31 passed, 0 failed in 7.33s
 
 # Web Frontend Production Build
 cd frontend && npm run build
-# Result: 1,722 modules transformed, built in 5.11s, 0 errors
+# Result: 1,777 modules transformed, built in 5.99s, 0 errors
 ```
 
 ---

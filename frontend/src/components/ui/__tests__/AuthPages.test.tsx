@@ -73,9 +73,10 @@ describe('Authentication Pages & Route Protection', () => {
     });
     fireEvent.change(screen.getByPlaceholderText('Re-enter password'), { target: { value: 'MismatchedPass' } });
 
-    // Enable terms checkbox to test password match validation
-    const termsCheckbox = screen.getByRole('checkbox');
-    fireEvent.click(termsCheckbox);
+    // Enable unbundled terms and health data checkboxes
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
 
     const submitBtn = screen.getByRole('button', { name: /create account/i });
     fireEvent.click(submitBtn);

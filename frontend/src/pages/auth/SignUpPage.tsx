@@ -52,6 +52,7 @@ export const SignUpPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToHealthData, setAgreedToHealthData] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const [oauthModal, setOauthModal] = useState<'google' | 'apple' | null>(null);
@@ -107,6 +108,10 @@ export const SignUpPage: React.FC = () => {
     }
     if (!agreedToTerms) {
       setLocalError('You must agree to the Terms of Service and Privacy Policy to create an account.');
+      return false;
+    }
+    if (!agreedToHealthData) {
+      setLocalError('You must provide explicit consent for health data processing for educational decision support.');
       return false;
     }
     return true;
@@ -377,8 +382,9 @@ export const SignUpPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Terms & Consent Checkbox */}
-          <div className="pt-2">
+          {/* Unbundled Consent & Terms Checkboxes */}
+          <div className="pt-2 space-y-3">
+            {/* 1. Mandatory Terms & Privacy */}
             <label className="flex items-start gap-2.5 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
               <input
                 type="checkbox"
@@ -388,15 +394,29 @@ export const SignUpPage: React.FC = () => {
                 className="mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-800"
               />
               <span className="leading-relaxed">
-                I agree to the{' '}
-                <Link to="/safety" className="font-semibold text-teal-600 dark:text-teal-400 underline">
+                I accept the{' '}
+                <Link to="/terms" target="_blank" className="font-semibold text-teal-600 dark:text-teal-400 underline">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link to="/privacy" className="font-semibold text-teal-600 dark:text-teal-400 underline">
+                <Link to="/privacy" target="_blank" className="font-semibold text-teal-600 dark:text-teal-400 underline">
                   Privacy Policy
                 </Link>
-                , and consent to processing my clinical metrics for educational decision support.
+                , and acknowledge that VYTAL is an educational prototype and NOT a medical diagnostic device.
+              </span>
+            </label>
+
+            {/* 2. Explicit Health Data Processing Consent */}
+            <label className="flex items-start gap-2.5 text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+              <input
+                type="checkbox"
+                required
+                checked={agreedToHealthData}
+                onChange={(e) => setAgreedToHealthData(e.target.checked)}
+                className="mt-0.5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-800"
+              />
+              <span className="leading-relaxed">
+                I explicitly consent to the processing of my self-entered lab values, symptoms, and medications for personalized health insights. I understand that I can withdraw this consent or request complete data erasure at any time in Account Settings.
               </span>
             </label>
           </div>
@@ -404,7 +424,7 @@ export const SignUpPage: React.FC = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={isSubmitting || !agreedToTerms}
+            disabled={isSubmitting || !agreedToTerms || !agreedToHealthData}
             className="w-full mt-4 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-md shadow-teal-500/20 disabled:opacity-50"
           >
             {isSubmitting ? (

@@ -72,9 +72,11 @@ export const Footer: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row items-center justify-between text-slate-500 text-[11px] gap-2">
           <p>© 2026 VYTAL Research Project. Open-access academic informatics prototype.</p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4">
             <Link to="/safety" className="hover:underline">Clinical Disclaimer</Link>
             <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link to="/terms" className="hover:underline">Terms of Service</Link>
+            <Link to="/data-deletion" className="hover:underline">Data Deletion</Link>
             <Link to="/about" className="hover:underline">Research Documentation</Link>
           </div>
         </div>

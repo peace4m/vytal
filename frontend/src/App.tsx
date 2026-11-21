@@ -23,6 +23,8 @@ import { ResearchDashboardPage } from '@/pages/ResearchDashboardPage';
 import { AboutPage } from '@/pages/AboutPage';
 import { SafetyPage } from '@/pages/SafetyPage';
 import { PrivacyPage } from '@/pages/PrivacyPage';
+import { TermsPage } from '@/pages/TermsPage';
+import { DataDeletionPage } from '@/pages/DataDeletionPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +52,8 @@ export const App: React.FC = () => {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/safety" element={<SafetyPage />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/data-deletion" element={<DataDeletionPage />} />
 
                 {/* Protected Healthcare & Personal Health Routes */}
                 <Route element={<ProtectedRoute />}>

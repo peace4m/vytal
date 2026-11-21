@@ -376,9 +376,31 @@ export const ProfilePage: React.FC = () => {
               <span>Healthcare Data Protection</span>
             </div>
             <p>
-              Under Indian Digital Personal Data Protection (DPDP) Act and HIPAA security guidelines,
-              your uploaded laboratory data and triage evaluations are encrypted and strictly bound to your user identity.
+              Under the Digital Personal Data Protection (DPDP) Act 2023, your uploaded laboratory data and triage evaluations are processed solely for educational decision support.
             </p>
+            <div className="pt-1 flex flex-col gap-1 text-[11px] text-teal-600 dark:text-teal-400">
+              <a href="#/privacy" className="hover:underline font-medium">Read Privacy Policy →</a>
+              <a href="#/terms" className="hover:underline font-medium">Read Terms of Service →</a>
+            </div>
+          </div>
+
+          {/* Consent Management & Withdrawal */}
+          <div className="bg-amber-50/50 dark:bg-amber-950/20 rounded-2xl border border-amber-200 dark:border-amber-900/60 p-5 space-y-3 text-xs">
+            <div className="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-200">
+              <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span>Consent Management</span>
+            </div>
+            <p className="text-amber-800 dark:text-amber-300 leading-relaxed text-[11px]">
+              You granted affirmative consent for health data processing during registration. You may withdraw this consent at any time, which halts analytical processing and provides immediate data erasure.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowDeleteModal(true)}
+              className="w-full text-xs text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800 hover:bg-amber-100/60 dark:hover:bg-amber-900/40"
+            >
+              Withdraw Consent & Erase Health Data
+            </Button>
           </div>
 
           {/* Danger Zone: Delete Account */}
