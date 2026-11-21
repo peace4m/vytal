@@ -16,10 +16,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # Job 1: Build the frontend bundle and upload artifact
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -36,7 +34,7 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Build Frontend
+      - name: Build Frontend Production Bundle
         working-directory: frontend
         run: |
           npm run build
@@ -48,9 +46,21 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: 'github-pages'
           path: frontend/dist
 
+  # Job 2: Deploy the finalized artifact to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: 'github-pages'
+
 
