@@ -35,7 +35,18 @@ jobs:
           DATABASE_URL: sqlite+aiosqlite:///./test_vytal.db
           PYTHONPATH: .
         run: |
-          python -m pytest -p pytest_asyncio backend/tests -v
+          set -o pipefail
+          python -m pytest -p pytest_asyncio backend/tests -v --tb=short 2>&1 | tee pytest_output.txt
+
+      - name: Publish Pytest Results to Summary
+        if: always()
+        run: |
+          if [ -f pytest_output.txt ]; then
+            echo "### Pytest Execution Log" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -n 60 pytest_output.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
 
   frontend-quality-gate:
     name: Frontend Vitest & Production Build
