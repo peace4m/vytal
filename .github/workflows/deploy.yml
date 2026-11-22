@@ -36,6 +36,8 @@ jobs:
 
       - name: Build Frontend Production Bundle
         working-directory: frontend
+        env:
+          VITE_API_BASE_URL: https://vytal-backend.onrender.com/api/v1
         run: |
           npm run build
           cp dist/index.html dist/404.html

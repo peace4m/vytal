@@ -18,7 +18,14 @@ import {
 } from './mockDemoBackend';
 import { localAuthService } from './supabase';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1';
+const DEFAULT_PROD_API = 'https://vytal-backend.onrender.com/api/v1';
+const DEFAULT_DEV_API = 'http://127.0.0.1:8000/api/v1';
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  (typeof window !== 'undefined' && window.location.hostname.includes('github.io')
+    ? DEFAULT_PROD_API
+    : DEFAULT_DEV_API);
 
 const SESSION_TOKEN_KEY = 'vytal_session_token';
 
