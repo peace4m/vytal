@@ -21,10 +21,8 @@ function getDefaultApiUrl(): string {
   if (process.env.EXPO_PUBLIC_API_URL) {
     return process.env.EXPO_PUBLIC_API_URL;
   }
-  if (Platform.OS === 'android') {
-    return 'http://10.0.2.2:8000/api/v1';
-  }
-  return 'http://localhost:8000/api/v1';
+  // Default to live cloud backend
+  return 'https://vytal-backend.onrender.com/api/v1';
 }
 
 export const API_BASE_URL = getDefaultApiUrl();
