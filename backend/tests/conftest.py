@@ -32,7 +32,7 @@ TestingSessionLocal = async_sessionmaker(
 )
 
 
-@pytest_asyncio.fixture(scope="session", autouse=True)
+@pytest_asyncio.fixture(scope="function", autouse=True)
 async def prepare_database():
     """Initializes tables in test database once for test session."""
     async with test_engine.begin() as conn:

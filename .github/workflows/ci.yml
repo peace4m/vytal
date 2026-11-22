@@ -35,7 +35,7 @@ jobs:
           DATABASE_URL: sqlite+aiosqlite:///./test_vytal.db
           PYTHONPATH: .
         run: |
-          python -m pytest backend/tests -v
+          python -m pytest -p pytest_asyncio backend/tests -v
 
   frontend-quality-gate:
     name: Frontend Vitest & Production Build

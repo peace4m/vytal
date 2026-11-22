@@ -3,6 +3,7 @@ User Authentication and Profile Synchronization Unit Tests
 """
 
 import pytest
+import pytest_asyncio
 import jwt
 from httpx import AsyncClient, ASGITransport
 from backend.app.main import app
@@ -10,7 +11,7 @@ from backend.app.core.config import settings
 from backend.app.database.session import init_db
 
 
-@pytest.fixture(autouse=True)
+@pytest_asyncio.fixture(autouse=True)
 async def setup_test_db():
     await init_db()
 
