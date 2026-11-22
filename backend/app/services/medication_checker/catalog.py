@@ -4,7 +4,8 @@ Contains 40+ essential diabetes, cardiovascular, antibiotic, NSAID, and psychotr
 Maps generic active ingredients, RxCUIs, and common Indian and global brand names.
 """
 
-from typing import List, Optional, Dict
+from __future__ import annotations
+from typing import List, Optional, Dict, Any, Set
 from dataclasses import dataclass
 
 
