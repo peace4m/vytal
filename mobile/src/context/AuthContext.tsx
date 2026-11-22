@@ -8,6 +8,7 @@ import { Platform } from 'react-native';
 import * as Linking from 'expo-linking';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured, SecureStoreAdapter } from '../services/supabase';
+import { API_BASE_URL } from '../services/api';
 
 export interface UserProfile {
   id: string;
@@ -347,7 +348,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!session) return;
     try {
       // Notify backend to deactivate account data
-      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1'}/users/me/account`, {
+      const response = await fetch(`${API_BASE_URL}/users/me/account`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
@@ -374,7 +375,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Sync to backend if session token is available
     if (session?.access_token) {
       try {
-        await fetch(`${process.env.EXPO_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1'}/users/me/preferences`, {
+        await fetch(`${API_BASE_URL}/users/me/preferences`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
